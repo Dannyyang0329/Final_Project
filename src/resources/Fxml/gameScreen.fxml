@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: Black;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GameController">
+   <children>
+      <Button layoutX="24.0" layoutY="24.0" mnemonicParsing="false" onAction="#back" prefHeight="65.0" prefWidth="65.0" style="-fx-background-image: url(&quot;/resources/Images/backButtonImage.png&quot;);" />
+      <ImageView fitHeight="720.0" fitWidth="816.0" layoutX="300.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Images/map1.png" />
+         </image>
+      </ImageView>
+      <Rectangle arcHeight="40.0" arcWidth="40.0" fill="#85b8cb" height="240.0" layoutX="24.0" layoutY="142.0" stroke="BLACK" strokeType="INSIDE" width="252.0" />
+      <Label layoutX="36.0" layoutY="212.0" prefHeight="30.0" prefWidth="175.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="        Bomb Number :" textFill="#d1dddb">
+         <font>
+            <Font name="Rockwell" size="18.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="221.0" layoutY="212.0" prefHeight="30.0" prefWidth="40.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="0" textFill="#d1dddb">
+         <font>
+            <Font name="Rockwell" size="18.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="41.0" layoutY="215.0" pickOnBounds="true">
+         <image>
+            <Image url="@../Images/bomb.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="39.0" layoutY="252.0" prefHeight="30.0" prefWidth="175.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="        Blast Range : " textFill="#d1dddb">
+         <font>
+            <Font name="Rockwell" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="39.0" layoutY="292.0" prefHeight="30.0" prefWidth="175.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="        Running Speed :" textFill="#d1dddb">
+         <font>
+            <Font name="Rockwell" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="39.0" layoutY="332.0" prefHeight="30.0" prefWidth="175.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="        Player Life :" textFill="#d1dddb">
+         <font>
+            <Font name="Rockwell" size="18.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="41.0" layoutY="255.0" pickOnBounds="true">
+         <image>
+            <Image url="@../Images/potion.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="41.0" layoutY="295.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Images/boot.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="41.0" layoutY="335.0" pickOnBounds="true">
+         <image>
+            <Image url="@../Images/heart.png" />
+         </image>
+      </ImageView>
+      <Label alignment="CENTER" layoutX="36.0" layoutY="162.0" prefHeight="30.0" prefWidth="225.0" style="-fx-background-color: #90ee90; -fx-background-radius: 8;" text="Player 1">
+         <font>
+            <Font name="Rockwell" size="18.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="221.0" layoutY="252.0" prefHeight="30.0" prefWidth="40.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="0" textFill="#d1dddb">
+         <font>
+            <Font name="Rockwell" size="18.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="221.0" layoutY="293.0" prefHeight="30.0" prefWidth="40.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="0" textFill="#d1dddb">
+         <font>
+            <Font name="Rockwell" size="18.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="221.0" layoutY="333.0" prefHeight="30.0" prefWidth="40.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="0" textFill="#d1dddb">
+         <font>
+            <Font name="Rockwell" size="18.0" />
+         </font>
+      </Label>
+      <Rectangle arcHeight="40.0" arcWidth="40.0" fill="#85b8cb" height="240.0" layoutX="24.0" layoutY="419.0" stroke="BLACK" strokeType="INSIDE" width="252.0" />
+      <Label layoutX="36.0" layoutY="489.0" prefHeight="30.0" prefWidth="175.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="        Bomb Number :" textFill="#d1dddb">
+         <font>
+            <Font name="Rockwell" size="18.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="221.0" layoutY="489.0" prefHeight="30.0" prefWidth="40.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="0" textFill="#d1dddb">
+         <font>
+            <Font name="Rockwell" size="18.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="41.0" layoutY="492.0" pickOnBounds="true">
+         <image>
+            <Image url="@../Images/bomb.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="39.0" layoutY="529.0" prefHeight="30.0" prefWidth="175.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="        Blast Range : " textFill="#d1dddb">
+         <font>
+            <Font name="Rockwell" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="39.0" layoutY="569.0" prefHeight="30.0" prefWidth="175.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="        Running Speed :" textFill="#d1dddb">
+         <font>
+            <Font name="Rockwell" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="39.0" layoutY="609.0" prefHeight="30.0" prefWidth="175.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="        Player Life :" textFill="#d1dddb">
+         <font>
+            <Font name="Rockwell" size="18.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="41.0" layoutY="532.0" pickOnBounds="true">
+         <image>
+            <Image url="@../Images/potion.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="41.0" layoutY="572.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Images/boot.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="41.0" layoutY="612.0" pickOnBounds="true">
+         <image>
+            <Image url="@../Images/heart.png" />
+         </image>
+      </ImageView>
+      <Label alignment="CENTER" layoutX="36.0" layoutY="439.0" prefHeight="30.0" prefWidth="225.0" style="-fx-background-color: #90ee90; -fx-background-radius: 8;" text="Player 2">
+         <font>
+            <Font name="Rockwell" size="18.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="221.0" layoutY="529.0" prefHeight="30.0" prefWidth="40.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="0" textFill="#d1dddb">
+         <font>
+            <Font name="Rockwell" size="18.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="221.0" layoutY="570.0" prefHeight="30.0" prefWidth="40.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="0" textFill="#d1dddb">
+         <font>
+            <Font name="Rockwell" size="18.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="221.0" layoutY="610.0" prefHeight="30.0" prefWidth="40.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="0" textFill="#d1dddb">
+         <font>
+            <Font name="Rockwell" size="18.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="blackView" fitHeight="800.0" fitWidth="1200.0" opacity="0.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../Images/blackImage.jpg" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
