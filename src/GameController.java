@@ -7,11 +7,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 
 public class GameController {
     
+    @FXML
+    AnchorPane pane;
+
     @FXML 
-    ImageView blackView;
+    ImageView blackView, mapImageView, playerImage1, playerImage2;
 
     long previousTime;
     AnimationTimer fadeOutTimer;
@@ -47,6 +51,9 @@ public class GameController {
     }
 
     public void screenFadeIn(int delay, int duration) {
+
+        pane.getChildren().remove(blackView);
+        pane.getChildren().add(blackView);
 
         fadeInTimer = new AnimationTimer(){
 

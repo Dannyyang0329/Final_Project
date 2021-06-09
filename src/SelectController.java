@@ -7,15 +7,20 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class SelectController {
+
+    private final static int TOTAL_LEVEL = 1;
 
     @FXML
     Label label1, label2, label3, label4, label5, label6, label7, label8, label9, label10;
 
     @FXML
     ImageView blackView;
+
+    private static Image mapImage[] = new Image[TOTAL_LEVEL+1];
 
     long previousTime;
     AnimationTimer fadeOutTimer;
@@ -35,6 +40,9 @@ public class SelectController {
 
         GameController controller = loader.getController();
         
+        new GameView(randomMap(controller), controller.pane, 1);
+        controller.playerImage1.setImage(new Image("/resources/Images/character1.png")); 
+
         this.screenFadeOut(2, 1, root);
         controller.screenFadeIn(3, 1);
     }
@@ -48,6 +56,9 @@ public class SelectController {
 
         GameController controller = loader.getController();
         
+        new GameView(randomMap(controller), controller.pane, 2);
+        controller.playerImage1.setImage(new Image("/resources/Images/character2.png")); 
+        
         this.screenFadeOut(2, 1, root);
         controller.screenFadeIn(3, 1);
     }
@@ -60,6 +71,9 @@ public class SelectController {
         Parent root = loader.load();
 
         GameController controller = loader.getController();
+
+        new GameView(randomMap(controller), controller.pane, 3);
+        controller.playerImage1.setImage(new Image("/resources/Images/character3.png")); 
         
         this.screenFadeOut(2, 1, root);
         controller.screenFadeIn(3, 1);
@@ -73,6 +87,9 @@ public class SelectController {
         Parent root = loader.load();
 
         GameController controller = loader.getController();
+
+        new GameView(randomMap(controller), controller.pane, 4);
+        controller.playerImage1.setImage(new Image("/resources/Images/character4.png")); 
         
         this.screenFadeOut(2, 1, root);
         controller.screenFadeIn(3, 1);
@@ -87,6 +104,9 @@ public class SelectController {
 
         GameController controller = loader.getController();
         
+        new GameView(randomMap(controller), controller.pane, 5);
+        controller.playerImage1.setImage(new Image("/resources/Images/character5.png")); 
+
         this.screenFadeOut(2, 1, root);
         controller.screenFadeIn(3, 1);
     }
@@ -100,6 +120,9 @@ public class SelectController {
 
         GameController controller = loader.getController();
         
+        new GameView(randomMap(controller), controller.pane, 6);
+        controller.playerImage1.setImage(new Image("/resources/Images/character6.png")); 
+
         this.screenFadeOut(2, 1, root);
         controller.screenFadeIn(3, 1);
     }
@@ -113,6 +136,9 @@ public class SelectController {
 
         GameController controller = loader.getController();
         
+        new GameView(randomMap(controller), controller.pane, 7);
+        controller.playerImage1.setImage(new Image("/resources/Images/character7.png")); 
+
         this.screenFadeOut(2, 1, root);
         controller.screenFadeIn(3, 1);
     }
@@ -126,6 +152,9 @@ public class SelectController {
 
         GameController controller = loader.getController();
         
+        new GameView(randomMap(controller), controller.pane, 8);
+        controller.playerImage1.setImage(new Image("/resources/Images/character8.png")); 
+
         this.screenFadeOut(2, 1, root);
         controller.screenFadeIn(3, 1);
     }
@@ -139,6 +168,9 @@ public class SelectController {
 
         GameController controller = loader.getController();
         
+        new GameView(randomMap(controller), controller.pane, 9);
+        controller.playerImage1.setImage(new Image("/resources/Images/character9.png")); 
+
         this.screenFadeOut(2, 1, root);
         controller.screenFadeIn(3, 1);
     }
@@ -152,8 +184,26 @@ public class SelectController {
 
         GameController controller = loader.getController();
         
+        new GameView(randomMap(controller), controller.pane, 10);
+        controller.playerImage1.setImage(new Image("/resources/Images/character10.png")); 
+
         this.screenFadeOut(2, 1, root);
         controller.screenFadeIn(3, 1);
+    }
+
+    public int randomMap(GameController control) {
+
+        int randomNum = (int)(Math.random()*TOTAL_LEVEL)+1;
+
+        if(mapImage[1] == null) {
+            mapImage[1] = new Image("/resources/Images/map1.png");
+            // mapImage[2] = new Image("/resources/Images/map2.png");
+            // mapImage[3] = new Image("/resources/Images/map3.png");
+        }
+
+        control.mapImageView.setImage(mapImage[randomNum]);
+
+        return randomNum;
     }
 
     public void screenFadeOut(int delay, int duration, Parent root) {

@@ -11,6 +11,7 @@ public class Character extends Pane {
     int offsetY = 0;
     int width = 48;
     int height = 48;
+    int speed = 2;
 
     final int DISTANCE = 48;
     double deltaDistance = 0;
@@ -38,8 +39,8 @@ public class Character extends Pane {
                 this.animation.setCount(3);
                 this.animation.setOffsetX(0);
                 this.animation.setOffsetY(96);
-                this.setTranslateX(this.getTranslateX() + 4);
-                deltaDistance += 4;
+                this.setTranslateX(this.getTranslateX() + speed);
+                deltaDistance += speed;
             }
 
             // going west
@@ -48,8 +49,8 @@ public class Character extends Pane {
                 this.animation.setCount(3);
                 this.animation.setOffsetX(0);
                 this.animation.setOffsetY(48);
-                this.setTranslateX(this.getTranslateX() - 4);
-                deltaDistance += 4;
+                this.setTranslateX(this.getTranslateX() - speed);
+                deltaDistance += speed;
             }
         }
     }
@@ -65,8 +66,8 @@ public class Character extends Pane {
                 this.animation.setCount(3);
                 this.animation.setOffsetX(0);
                 this.animation.setOffsetY(0);
-                this.setTranslateY(this.getTranslateY() + 4);
-                deltaDistance += 4;
+                this.setTranslateY(this.getTranslateY() + speed);
+                deltaDistance += speed;
             }
 
             // going north
@@ -76,13 +77,13 @@ public class Character extends Pane {
                 this.animation.setCount(3);
                 this.animation.setOffsetX(0);
                 this.animation.setOffsetY(144); 
-                this.setTranslateY(this.getTranslateY() - 4);
-                deltaDistance += 4;
+                this.setTranslateY(this.getTranslateY() - speed);
+                deltaDistance += speed;
             }
         }
     }
 
-    public void wink() {
+    public void stopWalking() {
         if(direction == 'W') {
             this.animation.setCount(1);
             this.animation.setOffsetX(48);

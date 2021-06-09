@@ -15,23 +15,13 @@ public class Main extends Application {
     private Scene scene;
     private Parent root;
 
-    public static Image iconImage;
-    public static Image blackImage;
-
-
     public static void main(String[] args) {
         launch();
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        loadImages();
         initializeScene();
-    }
-
-    private void loadImages() {
-        iconImage = new Image("/resources/Images/bombIconImage.png");
-        blackImage = new Image("/resources/Images/blackImage.jpg");
     }
 
     private void initializeScene() throws IOException {
@@ -44,7 +34,7 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.setTitle("Bomb King");
         stage.initStyle(StageStyle.UNDECORATED);
-        stage.getIcons().add(iconImage);
+        stage.getIcons().add(new Image("/resources/Images/bombIconImage.png"));
 
         stage.show();
     }
