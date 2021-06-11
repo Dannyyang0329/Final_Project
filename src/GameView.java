@@ -11,15 +11,24 @@ public class GameView {
     AnchorPane pane;
     Chunk chunk[][];
     Character player1;
-    private int playerNumber;
+    Character player2;
+    private int playerNumber1 = 1;
+    private int playerNumber2 = 1;
     private int mapNum;
 
-    private boolean north, south, west, east;
+    public static boolean isTwoPlayer = false;    
+    public static boolean isOnePlayer = false;
+
+    private boolean north1, south1, west1, east1;
+    private boolean north2, south2, west2, east2;
     private boolean playerIsPress1;
+    private boolean playerIsPress2;
 
     long previousTime1 = 0;
-    AnimationTimer gameLoop;
-    AnimationTimer pauseTimer;
+    long previousTime2 = 0;
+    public static AnimationTimer gameLoop;
+    AnimationTimer pauseTimer1;
+    AnimationTimer pauseTimer2;
 
     public static int map[][][] = new int[][][]{
         {}, 
@@ -42,10 +51,23 @@ public class GameView {
         },
     };
 
-    public GameView(int mapNum, AnchorPane pane, int playerNumber) {
+    public GameView(int mapNum, AnchorPane pane, int playerNumber1) {
         this.mapNum = mapNum;
         this.pane = pane;
-        this.playerNumber = playerNumber;
+        this.playerNumber1 = playerNumber1;
+
+        loadChunk();
+        loadPlayers();
+
+        addKeyPressListener();
+
+        startGameLoop();
+    }
+    public GameView(int mapNum, AnchorPane pane, int playerNumber1, int playerNumber2) {
+        this.mapNum = mapNum;
+        this.pane = pane;
+        this.playerNumber1 = playerNumber1;
+        this.playerNumber2 = playerNumber2;
 
         loadChunk();
         loadPlayers();
@@ -65,11 +87,14 @@ public class GameView {
 
                 if(map[mapNum][i][j] == 0) {
                     chunk[i][j].setBlocked(false);
-                    continue;
+                    chunk[i][j].setImageView(new Image("resources/Images/sand.png"));
+                    chunk[i][j].imageView.setLayoutX(300+48*j);
+                    chunk[i][j].imageView.setLayoutY(40+48*i);
+
+                    pane.getChildren().add(chunk[i][j].imageView);
                 }
                 if(map[mapNum][i][j] == 1) {
                     chunk[i][j].setBlocked(true);
-                    continue;
                 }
                 if(map[mapNum][i][j] == 2) {
                     chunk[i][j].setBlocked(true);
@@ -78,19 +103,29 @@ public class GameView {
                     chunk[i][j].imageView.setLayoutX(300+48*j);
                     chunk[i][j].imageView.setLayoutY(40+48*i);
 
-                    pane.getChildren().add(chunk[i][j].getImageView());
+                    pane.getChildren().add(chunk[i][j].imageView);
                 }
+
             }
         }
     }
 
     private void loadPlayers() {
-        player1 = new Character(new ImageView(new Image("/resources/Images/sprite"+playerNumber+".png")));
+        player1 = new Character(new ImageView(new Image("/resources/Images/sprite"+playerNumber1+".png")));
         player1.setLayoutX(348);
         player1.setLayoutY(88);
         player1.setChunk(1, 1);
         player1.animation.play();
         pane.getChildren().add(player1);
+
+        if(isTwoPlayer) {
+            player2 = new Character(new ImageView(new Image("/resources/Images/sprite"+playerNumber2+".png")));
+            player2.setLayoutX(1020);
+            player2.setLayoutY(664);
+            player2.setChunk(13, 15);
+            player2.animation.play();
+            pane.getChildren().add(player2);
+        }
     }
 
     private void addKeyPressListener() {
@@ -109,11 +144,11 @@ public class GameView {
                         }
                         else {
                             playerIsPress1 = true;
-                            north = true;
+                            north1 = true;
                             player1.Y--;
                             player1.deltaDistance = 0;
 
-                            stepPause();
+                            stepPause(1);
                         }
                     }
                     if(in == KeyCode.S) {
@@ -123,11 +158,11 @@ public class GameView {
                         }
                         else {
                             playerIsPress1 = true;
-                            south = true;
+                            south1 = true;
                             player1.Y++;
                             player1.deltaDistance = 0;
 
-                            stepPause();
+                            stepPause(1);
                         }
                     }
                     if(in == KeyCode.A) {
@@ -137,11 +172,11 @@ public class GameView {
                         }
                         else {
                             playerIsPress1 = true;
-                            west = true;
+                            west1 = true;
                             player1.X--;
                             player1.deltaDistance = 0;
 
-                            stepPause();
+                            stepPause(1);
                         }
                     }
                     if(in == KeyCode.D) {
@@ -151,39 +186,126 @@ public class GameView {
                         }
                         else {
                             playerIsPress1 = true;
-                            east = true;
+                            east1 = true;
                             player1.X++;
                             player1.deltaDistance = 0;
 
-                            stepPause();
+                            stepPause(1);
                         }
+                    }
+
+                    if(in == KeyCode.SPACE) {
+                        setBomb(1);
+                    }
+                }
+
+                if(isTwoPlayer && !playerIsPress2) {
+                    KeyCode in = e.getCode();
+
+                    if(in == KeyCode.UP) {
+                        if(chunk[player2.Y-1][player2.X].getBlocked()) {
+                            player2.direction = 'W';
+                            return;
+                        }
+                        else {
+                            playerIsPress2 = true;
+                            north2 = true;
+                            player2.Y--;
+                            player2.deltaDistance = 0;
+
+                            stepPause(2);
+                        }
+                    }
+                    if(in == KeyCode.DOWN) {
+                        if(chunk[player2.Y+1][player2.X].getBlocked()) {
+                            player2.direction = 'S';
+                            return;
+                        }
+                        else {
+                            playerIsPress2 = true;
+                            south2 = true;
+                            player2.Y++;
+                            player2.deltaDistance = 0;
+
+                            stepPause(2);
+                        }
+                    }
+                    if(in == KeyCode.LEFT) {
+                        if(chunk[player2.Y][player2.X-1].getBlocked()) {
+                            player2.direction = 'A';
+                            return;
+                        }
+                        else {
+                            playerIsPress2 = true;
+                            west2 = true;
+                            player2.X--;
+                            player2.deltaDistance = 0;
+
+                            stepPause(2);
+                        }
+                    }
+                    if(in == KeyCode.RIGHT) {
+                        if(chunk[player2.Y][player2.X+1].getBlocked()) {
+                            player2.direction = 'D';
+                            return;
+                        }
+                        else {
+                            playerIsPress2 = true;
+                            east2 = true;
+                            player2.X++;
+                            player2.deltaDistance = 0;
+
+                            stepPause(2);
+                        }
+                    }
+                    if(in == KeyCode.ENTER) {
+                        setBomb(2);
                     }
                 }
             }
         });
     }
 
-    private void stepPause() {
+    private void stepPause(int num) {
 
-        pauseTimer = new AnimationTimer() {
-
-            @Override
-            public void handle(long now) {
-                if(previousTime1 == 0) previousTime1 = now;
-                if(now-previousTime1 > 950000000/player1.speed) {
-                    playerIsPress1 = false;
-                    north = false;  
-                    east = false;
-                    south = false;
-                    west = false;
-                    previousTime1 = 0;
-                    pauseTimer.stop();
+        if(num == 1) {
+            pauseTimer1 = new AnimationTimer() {
+                @Override
+                public void handle(long now) {
+                    if(previousTime1 == 0) previousTime1 = now;
+                    if(now-previousTime1 > 950000000/player1.speed) {
+                        playerIsPress1 = false;
+                        north1 = false;  
+                        east1 = false;
+                        south1 = false;
+                        west1 = false;
+                        previousTime1 = 0;
+                        pauseTimer1.stop();
+                    }
                 }
-            }
+            };
 
-        };
+            pauseTimer1.start();
+        }
+        else if(num == 2) {
+            pauseTimer2 = new AnimationTimer() {
+                @Override
+                public void handle(long now) {
+                    if(previousTime2 == 0) previousTime2 = now;
+                    if(now-previousTime2 > 950000000/player2.speed) {
+                        playerIsPress2 = false;
+                        north2 = false;  
+                        east2 = false;
+                        south2 = false;
+                        west2 = false;
+                        previousTime2 = 0;
+                        pauseTimer2.stop();
+                    }
+                }
+            };
 
-        pauseTimer.start();
+            pauseTimer2.start();
+        }
     }
 
     private void startGameLoop() {
@@ -191,7 +313,8 @@ public class GameView {
 
             @Override
             public void handle(long now) {
-                playerWalk(player1);
+                playerWalk(1);
+                if(isTwoPlayer) playerWalk(2);
             }
             
         };
@@ -199,20 +322,88 @@ public class GameView {
         gameLoop.start();
     }
 
-    private void playerWalk(Character player) {
+    private void playerWalk(int num) {
 
         int dx = 0, dy = 0;
 
-        // determine player is walking or not
-        if (north) dy -= 1;
-        if (south) dy += 1;
-        if (east)  dx += 1;
-        if (west)  dx -= 1;
+        if(num == 1) {
+            // determine player is walking or not
+            if (north1) dy -= 1;
+            if (south1) dy += 1;
+            if (east1)  dx += 1;
+            if (west1)  dx -= 1;
 
-        if(dx == 0 && dy == 0) player.stopWalking();
-        else {
-            player.moveX(dx);
-            player.moveY(dy);
+            if(dx == 0 && dy == 0) player1.stopWalking();
+            else {
+                player1.moveX(dx);
+                player1.moveY(dy);
+            }
+        }
+        else if(num == 2) {
+            // determine player is walking or not
+            if (north2) dy -= 1;
+            if (south2) dy += 1;
+            if (east2)  dx += 1;
+            if (west2)  dx -= 1;
+
+            if(dx == 0 && dy == 0) player2.stopWalking();
+            else {
+                player2.moveX(dx);
+                player2.moveY(dy);
+            }
         }
     }
+
+    private void setBomb(int num){
+
+        if(num == 1) {
+            int y=player1.Y, x=player1.X;
+
+            if(chunk[y][x].imageView.getImage() == new Image("/resources/Images/elephantBomb.png")) return;
+
+            chunk[y][x].setImageView(new Image("/resources/Images/elephantBomb.png"));
+            chunk[y][x].setBlocked(true);
+
+            new AnimationTimer() {
+                private long time = 0;
+
+                @Override
+                public void handle(long now) {
+                    if(time == 0) time = now;
+                    if(now-time >= 2.5e9) {
+                        chunk[y][x].setBlocked(false);
+                        chunk[y][x].setImageView(new Image("/resources/Images/sand.png"));
+                        stop();
+                    }
+                }
+                
+            }.start();
+        }
+
+        if(num == 2) {
+
+            int y=player2.Y, x=player2.X;
+
+            if(chunk[y][x].imageView.getImage() == new Image("/resources/Images/elephantBomb.png")) return;
+
+            chunk[y][x].setImageView(new Image("/resources/Images/elephantBomb.png"));
+            chunk[y][x].setBlocked(true);
+
+            new AnimationTimer() {
+                private long time = 0;
+
+                @Override
+                public void handle(long now) {
+                    if(time == 0) time = now;
+                    if(now-time >= 2.5e9) {
+                        chunk[y][x].setBlocked(false);
+                        chunk[y][x].setImageView(new Image("/resources/Images/sand.png"));
+                        stop();
+                    }
+                }
+                
+            }.start();
+        }
+    }
+
 }

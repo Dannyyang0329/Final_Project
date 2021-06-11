@@ -19,17 +19,17 @@
             <Font name="Harlow Solid Italic" size="164.0" />
          </font>
       </Label>
-      <Button layoutX="350.0" layoutY="350.0" mnemonicParsing="false" onAction="#onePlayer" prefHeight="100.0" prefWidth="500.0" style="-fx-background-color: Aqua; -fx-background-radius: 20;" text="One Player" textFill="#463535">
+      <Button focusTraversable="false" layoutX="350.0" layoutY="350.0" mnemonicParsing="false" onAction="#onePlayer" prefHeight="100.0" prefWidth="500.0" style="-fx-background-color: Aqua; -fx-background-radius: 20;" text="One Player" textFill="#463535">
          <font>
             <Font name="Rockwell" size="24.0" />
          </font>
       </Button>
-      <Button layoutX="350.0" layoutY="500.0" mnemonicParsing="false" onAction="#twoPlayer" prefHeight="100.0" prefWidth="500.0" style="-fx-background-color: Aqua; -fx-background-radius: 20;" text="Two Players" textFill="#463535">
+      <Button focusTraversable="false" layoutX="350.0" layoutY="500.0" mnemonicParsing="false" onAction="#twoPlayer" prefHeight="100.0" prefWidth="500.0" style="-fx-background-color: Aqua; -fx-background-radius: 20;" text="Two Players" textFill="#463535">
          <font>
             <Font name="Rockwell" size="24.0" />
          </font>
       </Button>
-      <Button layoutX="350.0" layoutY="650.0" mnemonicParsing="false" onAction="#exit" prefHeight="100.0" prefWidth="500.0" style="-fx-background-color: Aqua; -fx-background-radius: 20;" text="Exit" textFill="#463535">
+      <Button focusTraversable="false" layoutX="350.0" layoutY="650.0" mnemonicParsing="false" onAction="#exit" prefHeight="100.0" prefWidth="500.0" style="-fx-background-color: Aqua; -fx-background-radius: 20;" text="Exit" textFill="#463535">
          <font>
             <Font name="Rockwell" size="24.0" />
          </font>

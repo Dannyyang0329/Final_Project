@@ -22,6 +22,8 @@ public class GameController {
     AnimationTimer fadeInTimer;
 
     public void back(ActionEvent e) throws IOException {
+        GameView.gameLoop.stop(); 
+
         Parent root = FXMLLoader.load(getClass().getResource("/resources/Fxml/SelectScreen.fxml"));
         Main.stage.setScene(new Scene(root));
     }

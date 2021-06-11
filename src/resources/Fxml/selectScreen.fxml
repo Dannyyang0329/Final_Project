@@ -114,17 +114,17 @@
             <Image url="@../Images/character10.png" />
          </image>
       </ImageView>
-      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#back" prefHeight="65.0" prefWidth="65.0" style="-fx-background-image: url(&quot;/resources/Images/backButtonImage.png&quot;);" />
-      <Button layoutX="100.0" layoutY="270.0" mnemonicParsing="false" onAction="#click1" opacity="0.0" prefHeight="180.0" prefWidth="180.0" />
-      <Button layoutX="305.0" layoutY="270.0" mnemonicParsing="false" onAction="#click2" opacity="0.0" prefHeight="180.0" prefWidth="180.0" />
-      <Button layoutX="512.0" layoutY="270.0" mnemonicParsing="false" onAction="#click3" opacity="0.0" prefHeight="180.0" prefWidth="180.0" />
-      <Button layoutX="715.0" layoutY="270.0" mnemonicParsing="false" onAction="#click4" opacity="0.0" prefHeight="180.0" prefWidth="180.0" />
-      <Button layoutX="920.0" layoutY="270.0" mnemonicParsing="false" onAction="#click5" opacity="0.0" prefHeight="180.0" prefWidth="180.0" />
-      <Button layoutX="100.0" layoutY="477.0" mnemonicParsing="false" onAction="#click6" opacity="0.0" prefHeight="180.0" prefWidth="180.0" />
-      <Button layoutX="305.0" layoutY="477.0" mnemonicParsing="false" onAction="#click7" opacity="0.0" prefHeight="180.0" prefWidth="180.0" />
-      <Button layoutX="510.0" layoutY="477.0" mnemonicParsing="false" onAction="#click8" opacity="0.0" prefHeight="180.0" prefWidth="180.0" />
-      <Button layoutX="715.0" layoutY="477.0" mnemonicParsing="false" onAction="#click9" opacity="0.0" prefHeight="180.0" prefWidth="180.0" />
-      <Button layoutX="920.0" layoutY="477.0" mnemonicParsing="false" onAction="#click10" opacity="0.0" prefHeight="180.0" prefWidth="180.0" />
+      <Button focusTraversable="false" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#back" prefHeight="65.0" prefWidth="65.0" style="-fx-background-image: url(&quot;/resources/Images/backButtonImage.png&quot;);" />
+      <Button focusTraversable="false" layoutX="100.0" layoutY="270.0" mnemonicParsing="false" onAction="#click1" opacity="0.0" prefHeight="180.0" prefWidth="180.0" />
+      <Button focusTraversable="false" layoutX="305.0" layoutY="270.0" mnemonicParsing="false" onAction="#click2" opacity="0.0" prefHeight="180.0" prefWidth="180.0" />
+      <Button focusTraversable="false" layoutX="512.0" layoutY="270.0" mnemonicParsing="false" onAction="#click3" opacity="0.0" prefHeight="180.0" prefWidth="180.0" />
+      <Button focusTraversable="false" layoutX="715.0" layoutY="270.0" mnemonicParsing="false" onAction="#click4" opacity="0.0" prefHeight="180.0" prefWidth="180.0" />
+      <Button focusTraversable="false" layoutX="920.0" layoutY="270.0" mnemonicParsing="false" onAction="#click5" opacity="0.0" prefHeight="180.0" prefWidth="180.0" />
+      <Button focusTraversable="false" layoutX="100.0" layoutY="477.0" mnemonicParsing="false" onAction="#click6" opacity="0.0" prefHeight="180.0" prefWidth="180.0" />
+      <Button focusTraversable="false" layoutX="305.0" layoutY="477.0" mnemonicParsing="false" onAction="#click7" opacity="0.0" prefHeight="180.0" prefWidth="180.0" />
+      <Button focusTraversable="false" layoutX="510.0" layoutY="477.0" mnemonicParsing="false" onAction="#click8" opacity="0.0" prefHeight="180.0" prefWidth="180.0" />
+      <Button focusTraversable="false" layoutX="715.0" layoutY="477.0" mnemonicParsing="false" onAction="#click9" opacity="0.0" prefHeight="180.0" prefWidth="180.0" />
+      <Button focusTraversable="false" layoutX="920.0" layoutY="477.0" mnemonicParsing="false" onAction="#click10" opacity="0.0" prefHeight="180.0" prefWidth="180.0" />
       <Label alignment="CENTER" layoutX="275.0" layoutY="85.0" prefHeight="120.0" prefWidth="650.0" text="Select Character" textFill="#978c8c">
          <font>
             <Font name="Rockwell" size="84.0" />

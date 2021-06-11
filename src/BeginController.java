@@ -18,7 +18,6 @@ public class BeginController {
     public AnimationTimer fadeOutTimer;
     public AnimationTimer fadeInTimer;
 
-    
     public void onePlayer(ActionEvent e) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/Fxml/selectScreen.fxml"));
         Parent root = loader.load();
@@ -27,6 +26,8 @@ public class BeginController {
 
         this.screenFadeOut(0, 1, root);
         controller.screenFadeIn(1, 1);
+
+        GameView.isOnePlayer = true;
     }
 
     public void twoPlayer(ActionEvent e) throws IOException {
@@ -37,6 +38,8 @@ public class BeginController {
 
         this.screenFadeOut(0, 1, root);
         controller.screenFadeIn(1, 1);
+
+        GameView.isTwoPlayer = true;
     }
 
     public void exit(ActionEvent e) {
