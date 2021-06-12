@@ -9,6 +9,8 @@ public class Chunk {
     
     private boolean isBlocked = false;
     private boolean canCreateItem = false;
+    boolean isFiringBomb = false;
+    boolean isWall = false;
 
     boolean isBoot = false;
     boolean isPotion = false;
