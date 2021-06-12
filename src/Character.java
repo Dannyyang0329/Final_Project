@@ -11,7 +11,11 @@ public class Character extends Pane {
     int offsetY = 0;
     int width = 48;
     int height = 48;
+
+    int bombNumber = 1;
+    int blastRange = 1;
     int speed = 2;
+    int heart = 2;
 
     final int DISTANCE = 48;
     double deltaDistance = 0;
@@ -24,7 +28,7 @@ public class Character extends Pane {
     public Character(ImageView imageView) {
         this.imageView = imageView;
         this.imageView.setViewport(new Rectangle2D(offsetX, offsetY, width, height));
-        animation = new SpriteAnimation(imageView, Duration.millis(500), count, column, offsetX, offsetY, width, height);
+        animation = new SpriteAnimation(imageView, Duration.millis(500/speed), count, column, offsetX, offsetY, width, height);
         getChildren().addAll(imageView);
     }
 
@@ -39,7 +43,8 @@ public class Character extends Pane {
                 this.animation.setCount(3);
                 this.animation.setOffsetX(0);
                 this.animation.setOffsetY(96);
-                this.setTranslateX(this.getTranslateX() + speed);
+                if(DISTANCE-deltaDistance < speed) this.setTranslateX(this.getTranslateX() + (DISTANCE-deltaDistance));
+                else this.setTranslateX(this.getTranslateX() + speed);
                 deltaDistance += speed;
             }
 
@@ -49,7 +54,8 @@ public class Character extends Pane {
                 this.animation.setCount(3);
                 this.animation.setOffsetX(0);
                 this.animation.setOffsetY(48);
-                this.setTranslateX(this.getTranslateX() - speed);
+                if(DISTANCE-deltaDistance < speed) this.setTranslateX(this.getTranslateX() - (DISTANCE-deltaDistance));
+                else this.setTranslateX(this.getTranslateX() - speed);
                 deltaDistance += speed;
             }
         }
@@ -66,7 +72,8 @@ public class Character extends Pane {
                 this.animation.setCount(3);
                 this.animation.setOffsetX(0);
                 this.animation.setOffsetY(0);
-                this.setTranslateY(this.getTranslateY() + speed);
+                if(DISTANCE-deltaDistance < speed) this.setTranslateY(this.getTranslateY() + (DISTANCE-deltaDistance));
+                else this.setTranslateY(this.getTranslateY() + speed);
                 deltaDistance += speed;
             }
 
@@ -77,7 +84,8 @@ public class Character extends Pane {
                 this.animation.setCount(3);
                 this.animation.setOffsetX(0);
                 this.animation.setOffsetY(144); 
-                this.setTranslateY(this.getTranslateY() - speed);
+                if(DISTANCE-deltaDistance < speed) this.setTranslateY(this.getTranslateY() - (DISTANCE-deltaDistance));
+                else this.setTranslateY(this.getTranslateY() - speed);
                 deltaDistance += speed;
             }
         }

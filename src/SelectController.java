@@ -64,8 +64,8 @@ public class SelectController {
         controller.playerImage1.setImage(new Image("/resources/Images/character"+playerNumber1+".png"));
         if(GameView.isTwoPlayer) controller.playerImage2.setImage(new Image("/resources/Images/character"+playerNumber2+".png"));
         
-        if(GameView.isOnePlayer) new GameView(randomMap(controller), controller.pane, playerNumber1);
-        if(GameView.isTwoPlayer) new GameView(randomMap(controller), controller.pane, playerNumber1, playerNumber2);
+        if(GameView.isOnePlayer) new GameView(randomMap(controller), controller, playerNumber1);
+        if(GameView.isTwoPlayer) new GameView(randomMap(controller), controller, playerNumber1, playerNumber2);
 
         this.screenFadeOut(2, 1, root);
         controller.screenFadeIn(3, 1);
@@ -98,8 +98,8 @@ public class SelectController {
         if(GameView.isTwoPlayer) controller.playerImage2.setImage(new Image("/resources/Images/character"+playerNumber2+".png"));
 
         
-        if(GameView.isOnePlayer) new GameView(randomMap(controller), controller.pane, playerNumber1);
-        if(GameView.isTwoPlayer) new GameView(randomMap(controller), controller.pane, playerNumber1, playerNumber2);
+        if(GameView.isOnePlayer) new GameView(randomMap(controller), controller, playerNumber1);
+        if(GameView.isTwoPlayer) new GameView(randomMap(controller), controller, playerNumber1, playerNumber2);
 
         this.screenFadeOut(2, 1, root);
         controller.screenFadeIn(3, 1);
@@ -131,8 +131,8 @@ public class SelectController {
         controller.playerImage1.setImage(new Image("/resources/Images/character"+playerNumber1+".png"));
         if(GameView.isTwoPlayer) controller.playerImage2.setImage(new Image("/resources/Images/character"+playerNumber2+".png"));
 
-        if(GameView.isOnePlayer) new GameView(randomMap(controller), controller.pane, playerNumber1);
-        if(GameView.isTwoPlayer) new GameView(randomMap(controller), controller.pane, playerNumber1, playerNumber2);
+        if(GameView.isOnePlayer) new GameView(randomMap(controller), controller, playerNumber1);
+        if(GameView.isTwoPlayer) new GameView(randomMap(controller), controller, playerNumber1, playerNumber2);
 
         this.screenFadeOut(2, 1, root);
         controller.screenFadeIn(3, 1);
@@ -164,8 +164,8 @@ public class SelectController {
         controller.playerImage1.setImage(new Image("/resources/Images/character"+playerNumber1+".png"));
         if(GameView.isTwoPlayer) controller.playerImage2.setImage(new Image("/resources/Images/character"+playerNumber2+".png"));
 
-        if(GameView.isOnePlayer) new GameView(randomMap(controller), controller.pane, playerNumber1);
-        if(GameView.isTwoPlayer) new GameView(randomMap(controller), controller.pane, playerNumber1, playerNumber2);
+        if(GameView.isOnePlayer) new GameView(randomMap(controller), controller, playerNumber1);
+        if(GameView.isTwoPlayer) new GameView(randomMap(controller), controller, playerNumber1, playerNumber2);
 
         this.screenFadeOut(2, 1, root);
         controller.screenFadeIn(3, 1);
@@ -197,8 +197,8 @@ public class SelectController {
         controller.playerImage1.setImage(new Image("/resources/Images/character"+playerNumber1+".png"));
         if(GameView.isTwoPlayer) controller.playerImage2.setImage(new Image("/resources/Images/character"+playerNumber2+".png"));
         
-        if(GameView.isOnePlayer) new GameView(randomMap(controller), controller.pane, playerNumber1);
-        if(GameView.isTwoPlayer) new GameView(randomMap(controller), controller.pane, playerNumber1, playerNumber2);
+        if(GameView.isOnePlayer) new GameView(randomMap(controller), controller, playerNumber1);
+        if(GameView.isTwoPlayer) new GameView(randomMap(controller), controller, playerNumber1, playerNumber2);
 
         this.screenFadeOut(2, 1, root);
         controller.screenFadeIn(3, 1);
@@ -230,8 +230,8 @@ public class SelectController {
         controller.playerImage1.setImage(new Image("/resources/Images/character"+playerNumber1+".png"));
         if(GameView.isTwoPlayer) controller.playerImage2.setImage(new Image("/resources/Images/character"+playerNumber2+".png"));
 
-        if(GameView.isOnePlayer) new GameView(randomMap(controller), controller.pane, playerNumber1);
-        if(GameView.isTwoPlayer) new GameView(randomMap(controller), controller.pane, playerNumber1, playerNumber2);
+        if(GameView.isOnePlayer) new GameView(randomMap(controller), controller, playerNumber1);
+        if(GameView.isTwoPlayer) new GameView(randomMap(controller), controller, playerNumber1, playerNumber2);
 
         this.screenFadeOut(2, 1, root);
         controller.screenFadeIn(3, 1);
@@ -263,8 +263,8 @@ public class SelectController {
         controller.playerImage1.setImage(new Image("/resources/Images/character"+playerNumber1+".png"));
         if(GameView.isTwoPlayer) controller.playerImage2.setImage(new Image("/resources/Images/character"+playerNumber2+".png"));
 
-        if(GameView.isOnePlayer) new GameView(randomMap(controller), controller.pane, playerNumber1);
-        if(GameView.isTwoPlayer) new GameView(randomMap(controller), controller.pane, playerNumber1, playerNumber2);
+        if(GameView.isOnePlayer) new GameView(randomMap(controller), controller, playerNumber1);
+        if(GameView.isTwoPlayer) new GameView(randomMap(controller), controller, playerNumber1, playerNumber2);
 
         this.screenFadeOut(2, 1, root);
         controller.screenFadeIn(3, 1);
@@ -296,8 +296,8 @@ public class SelectController {
         controller.playerImage1.setImage(new Image("/resources/Images/character"+playerNumber1+".png"));
         if(GameView.isTwoPlayer) controller.playerImage2.setImage(new Image("/resources/Images/character"+playerNumber2+".png"));
         
-        if(GameView.isOnePlayer) new GameView(randomMap(controller), controller.pane, playerNumber1);
-        if(GameView.isTwoPlayer) new GameView(randomMap(controller), controller.pane, playerNumber1, playerNumber2);
+        if(GameView.isOnePlayer) new GameView(randomMap(controller), controller, playerNumber1);
+        if(GameView.isTwoPlayer) new GameView(randomMap(controller), controller, playerNumber1, playerNumber2);
 
         this.screenFadeOut(2, 1, root);
         controller.screenFadeIn(3, 1);
@@ -330,8 +330,8 @@ public class SelectController {
         controller.playerImage1.setImage(new Image("/resources/Images/character"+playerNumber1+".png"));
         if(GameView.isTwoPlayer) controller.playerImage2.setImage(new Image("/resources/Images/character"+playerNumber2+".png"));
         
-        if(GameView.isOnePlayer) new GameView(randomMap(controller), controller.pane, playerNumber1);
-        if(GameView.isTwoPlayer) new GameView(randomMap(controller), controller.pane, playerNumber1, playerNumber2);
+        if(GameView.isOnePlayer) new GameView(randomMap(controller), controller, playerNumber1);
+        if(GameView.isTwoPlayer) new GameView(randomMap(controller), controller, playerNumber1, playerNumber2);
 
         this.screenFadeOut(2, 1, root);
         controller.screenFadeIn(3, 1);
@@ -364,8 +364,8 @@ public class SelectController {
         controller.playerImage1.setImage(new Image("/resources/Images/character"+playerNumber1+".png"));
         if(GameView.isTwoPlayer) controller.playerImage2.setImage(new Image("/resources/Images/character"+playerNumber2+".png"));
         
-        if(GameView.isOnePlayer) new GameView(randomMap(controller), controller.pane, playerNumber1);
-        if(GameView.isTwoPlayer) new GameView(randomMap(controller), controller.pane, playerNumber1, playerNumber2);
+        if(GameView.isOnePlayer) new GameView(randomMap(controller), controller, playerNumber1);
+        if(GameView.isTwoPlayer) new GameView(randomMap(controller), controller, playerNumber1, playerNumber2);
 
         this.screenFadeOut(2, 1, root);
         controller.screenFadeIn(3, 1);

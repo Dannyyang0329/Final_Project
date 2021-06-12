@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
@@ -17,9 +18,37 @@ public class GameController {
     @FXML 
     ImageView blackView, mapImageView, playerImage1, playerImage2;
 
+    @FXML
+    Label bombNumber1, bombNumber2, blastRange1, blastRange2, speed1, speed2, heart1, heart2;
+
     long previousTime;
     AnimationTimer fadeOutTimer;
     AnimationTimer fadeInTimer;
+
+    // public Label getBombNumber1() {
+    //     return bombNumber1;
+    // }
+    // public Label getBombNumber2() {
+    //     return bombNumber2;
+    // }
+    // public Label getBlastRange1() {
+    //     return blastRange1;
+    // }
+    // public Label getBlastRange2() {
+    //     return blastRange2;
+    // }
+    // public Label getSpeed1() {
+    //     return speed1;
+    // }
+    // public Label getSpeed2() {
+    //     return speed2;
+    // }
+    // public Label getHeart1() {
+    //     return heart1;
+    // }
+    // public Label getHeart2() {
+    //     return heart2;
+    // }
 
     public void back(ActionEvent e) throws IOException {
         GameView.gameLoop.stop(); 

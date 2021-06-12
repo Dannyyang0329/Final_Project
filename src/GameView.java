@@ -8,6 +8,7 @@ import javafx.scene.layout.AnchorPane;
 
 public class GameView {
 
+    GameController controller;
     AnchorPane pane;
     Chunk chunk[][];
     Character player1;
@@ -51,9 +52,10 @@ public class GameView {
         },
     };
 
-    public GameView(int mapNum, AnchorPane pane, int playerNumber1) {
+    public GameView(int mapNum, GameController controller, int playerNumber1) {
         this.mapNum = mapNum;
-        this.pane = pane;
+        this.controller = controller;
+        pane = controller.pane;
         this.playerNumber1 = playerNumber1;
 
         loadChunk();
@@ -63,9 +65,10 @@ public class GameView {
 
         startGameLoop();
     }
-    public GameView(int mapNum, AnchorPane pane, int playerNumber1, int playerNumber2) {
+    public GameView(int mapNum, GameController controller, int playerNumber1, int playerNumber2) {
         this.mapNum = mapNum;
-        this.pane = pane;
+        this.controller = controller;
+        pane = controller.pane;
         this.playerNumber1 = playerNumber1;
         this.playerNumber2 = playerNumber2;
 
@@ -273,7 +276,7 @@ public class GameView {
                 @Override
                 public void handle(long now) {
                     if(previousTime1 == 0) previousTime1 = now;
-                    if(now-previousTime1 > 950000000/player1.speed) {
+                    if(now-previousTime1 > 900000000/player1.speed) {
                         playerIsPress1 = false;
                         north1 = false;  
                         east1 = false;
@@ -292,7 +295,7 @@ public class GameView {
                 @Override
                 public void handle(long now) {
                     if(previousTime2 == 0) previousTime2 = now;
-                    if(now-previousTime2 > 950000000/player2.speed) {
+                    if(now-previousTime2 > 900000000/player2.speed) {
                         playerIsPress2 = false;
                         north2 = false;  
                         east2 = false;
@@ -315,6 +318,12 @@ public class GameView {
             public void handle(long now) {
                 playerWalk(1);
                 if(isTwoPlayer) playerWalk(2);
+
+                if(chunk[player1.Y][player1.X].isBoot) { 
+                    chunk[player1.Y][player1.X].setImageView(new Image("/resources/Images/sand.png"));
+                    chunk[player1.Y][player1.X].isBoot = false;
+                    player1.speed++;
+                }
             }
             
         };
@@ -356,13 +365,16 @@ public class GameView {
 
     private void setBomb(int num){
 
+        
         if(num == 1) {
             int y=player1.Y, x=player1.X;
 
             if(chunk[y][x].imageView.getImage() == new Image("/resources/Images/elephantBomb.png")) return;
+            if(player1.bombNumber <= 0) return;
 
-            chunk[y][x].setImageView(new Image("/resources/Images/elephantBomb.png"));
+            chunk[y][x].setImageView(new Image(getClass().getResource("/resources/Images/elephantBomb.gif").toExternalForm()));
             chunk[y][x].setBlocked(true);
+            controller.bombNumber1.setText(Integer.toString(--player1.bombNumber));
 
             new AnimationTimer() {
                 private long time = 0;
@@ -373,6 +385,8 @@ public class GameView {
                     if(now-time >= 2.5e9) {
                         chunk[y][x].setBlocked(false);
                         chunk[y][x].setImageView(new Image("/resources/Images/sand.png"));
+                        controller.bombNumber1.setText(Integer.toString(++player1.bombNumber));
+                        bombBurst(y, x, player1.blastRange);
                         stop();
                     }
                 }
@@ -385,9 +399,11 @@ public class GameView {
             int y=player2.Y, x=player2.X;
 
             if(chunk[y][x].imageView.getImage() == new Image("/resources/Images/elephantBomb.png")) return;
+            if(player2.bombNumber <= 0) return;
 
-            chunk[y][x].setImageView(new Image("/resources/Images/elephantBomb.png"));
+            chunk[y][x].setImageView(new Image(getClass().getResource("/resources/Images/elephantBomb.gif").toExternalForm()));
             chunk[y][x].setBlocked(true);
+            controller.bombNumber2.setText(Integer.toString(--player2.bombNumber));
 
             new AnimationTimer() {
                 private long time = 0;
@@ -398,6 +414,8 @@ public class GameView {
                     if(now-time >= 2.5e9) {
                         chunk[y][x].setBlocked(false);
                         chunk[y][x].setImageView(new Image("/resources/Images/sand.png"));
+                        controller.bombNumber2.setText(Integer.toString(++player2.bombNumber));
+                        bombBurst(y, x, player2.blastRange);
                         stop();
                     }
                 }
@@ -406,4 +424,89 @@ public class GameView {
         }
     }
 
+    private void bombBurst(int y, int x, int range) {
+
+        new AnimationTimer() {
+            int r=1;
+            long previousTime = 0;
+            double lastTimeShow = 0;
+            double duration = 0.5e9;
+
+            @Override
+            public void handle(long now) {
+                if(previousTime == 0) {
+                    previousTime = now;
+                    chunk[y][x].setImageView(new Image("/resources/Images/fire.jpg"));
+                }
+
+                // Blast
+                if(now-previousTime>lastTimeShow && now-previousTime<=r*(duration/range)) {
+                    // UP
+                    for(int i=1 ; i<=range ; i++) {
+                        if(!chunk[y-i][x].getBlocked() || chunk[y-i][x].getCreatedItem()) chunk[y-i][x].setImageView(new Image("/resources/Images/fire.jpg"));
+                    }
+                    // DOWN
+                    for(int i=1 ; i<=range ; i++) {
+                        if(!chunk[y+i][x].getBlocked() || chunk[y+i][x].getCreatedItem()) chunk[y+i][x].setImageView(new Image("/resources/Images/fire.jpg"));
+                    }
+                    // LEFT
+                    for(int i=1 ; i<=range ; i++) {
+                        if(!chunk[y][x-1].getBlocked() || chunk[y][x-1].getCreatedItem()) chunk[y][x-1].setImageView(new Image("/resources/Images/fire.jpg"));
+                    }
+                    // RIGHT
+                    for(int i=1 ; i<=range ; i++) {
+                        if(!chunk[y][x+1].getBlocked() || chunk[y][x+1].getCreatedItem()) chunk[y][x+1].setImageView(new Image("/resources/Images/fire.jpg"));
+                    }
+
+                    if(r+1 <= range) r++;
+                }
+
+                // Show item
+                if(now-previousTime >= range*(duration/range)) {
+
+                    // CENTER
+                    chunk[y][x].setImageView(new Image("/resources/Images/sand.png"));
+
+                    // UP
+                    for(int i=1 ; i<=range ; i++) {
+                        if(!chunk[y-i][x].getBlocked()) chunk[y-i][x].setImageView(new Image("/resources/Images/sand.png"));
+                        if(chunk[y-i][x].getCreatedItem()) {
+                            chunk[y-i][x].setBlocked(false);
+                            chunk[y-i][x].setCreatedItem(false);
+                            chunk[y-i][x].createItem();
+                        }
+                    }
+                    // DOWN
+                    for(int i=1 ; i<=range ; i++) {
+                        if(!chunk[y+i][x].getBlocked()) chunk[y+i][x].setImageView(new Image("/resources/Images/sand.png"));
+                        if(chunk[y+i][x].getCreatedItem()) {
+                            chunk[y+i][x].setBlocked(false);
+                            chunk[y+i][x].setCreatedItem(false);
+                            chunk[y+i][x].createItem();
+                        }
+                    }
+                    // LEFT
+                    for(int i=1 ; i<=range ; i++) {
+                        if(!chunk[y][x-i].getBlocked()) chunk[y][x-1].setImageView(new Image("/resources/Images/sand.png"));
+                        if(chunk[y][x-i].getCreatedItem()) {
+                            chunk[y][x-i].setBlocked(false);
+                            chunk[y][x-i].setCreatedItem(false);
+                            chunk[y][x-i].createItem();
+                        }
+                    }
+                    // RIGHT
+                    for(int i=1 ; i<=range ; i++) {
+                        if(!chunk[y][x+i].getBlocked()) chunk[y][x+1].setImageView(new Image("/resources/Images/sand.png"));
+                        if(chunk[y][x+i].getCreatedItem()) {
+                            chunk[y][x+i].setBlocked(false);
+                            chunk[y][x+i].setCreatedItem(false);
+                            chunk[y][x+i].createItem();
+                        }
+                    }
+                    stop();
+                }
+            }
+        }.start();
+
+    }
 }

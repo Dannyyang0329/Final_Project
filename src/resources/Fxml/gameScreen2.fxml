@@ -22,7 +22,7 @@
             <Font name="Rockwell" size="18.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="221.0" layoutY="232.0" prefHeight="30.0" prefWidth="40.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="0" textFill="#d1dddb">
+      <Label fx:id="bombNumber1" alignment="CENTER" layoutX="221.0" layoutY="232.0" prefHeight="30.0" prefWidth="40.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="1" textFill="#d1dddb">
          <font>
             <Font name="Rockwell" size="18.0" />
          </font>
@@ -67,17 +67,17 @@
             <Font name="Rockwell" size="18.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="221.0" layoutY="272.0" prefHeight="30.0" prefWidth="40.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="0" textFill="#d1dddb">
+      <Label fx:id="blastRange1" alignment="CENTER" layoutX="221.0" layoutY="272.0" prefHeight="30.0" prefWidth="40.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="1" textFill="#d1dddb">
          <font>
             <Font name="Rockwell" size="18.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="221.0" layoutY="313.0" prefHeight="30.0" prefWidth="40.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="0" textFill="#d1dddb">
+      <Label fx:id="speed1" alignment="CENTER" layoutX="221.0" layoutY="313.0" prefHeight="30.0" prefWidth="40.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="2" textFill="#d1dddb">
          <font>
             <Font name="Rockwell" size="18.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="221.0" layoutY="353.0" prefHeight="30.0" prefWidth="40.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="0" textFill="#d1dddb">
+      <Label fx:id="heart1" alignment="CENTER" layoutX="221.0" layoutY="353.0" prefHeight="30.0" prefWidth="40.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="2" textFill="#d1dddb">
          <font>
             <Font name="Rockwell" size="18.0" />
          </font>
@@ -93,7 +93,7 @@
             <Font name="Rockwell" size="18.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="221.0" layoutY="544.0" prefHeight="30.0" prefWidth="40.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="0" textFill="#d1dddb">
+      <Label fx:id="bombNumber2" alignment="CENTER" layoutX="221.0" layoutY="544.0" prefHeight="30.0" prefWidth="40.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="1" textFill="#d1dddb">
          <font>
             <Font name="Rockwell" size="18.0" />
          </font>
@@ -138,17 +138,17 @@
             <Font name="Rockwell" size="18.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="221.0" layoutY="584.0" prefHeight="30.0" prefWidth="40.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="0" textFill="#d1dddb">
+      <Label fx:id="blastRange2" alignment="CENTER" layoutX="221.0" layoutY="584.0" prefHeight="30.0" prefWidth="40.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="1" textFill="#d1dddb">
          <font>
             <Font name="Rockwell" size="18.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="221.0" layoutY="625.0" prefHeight="30.0" prefWidth="40.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="0" textFill="#d1dddb">
+      <Label fx:id="speed2" alignment="CENTER" layoutX="221.0" layoutY="625.0" prefHeight="30.0" prefWidth="40.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="2" textFill="#d1dddb">
          <font>
             <Font name="Rockwell" size="18.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="221.0" layoutY="665.0" prefHeight="30.0" prefWidth="40.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="0" textFill="#d1dddb">
+      <Label fx:id="heart2" alignment="CENTER" layoutX="221.0" layoutY="665.0" prefHeight="30.0" prefWidth="40.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="2" textFill="#d1dddb">
          <font>
             <Font name="Rockwell" size="18.0" />
          </font>

@@ -10,21 +10,33 @@ public class Chunk {
     private boolean isBlocked = false;
     private boolean canCreateItem = false;
 
+    boolean isBoot = false;
+    boolean isPotion = false;
+    boolean isBomb = false;
+    boolean isHeart = false;
+
     public void createItem() {
         double random = Math.random()*100+1;
 
-        if(random <= 50) return;        // 50% nothing
+        if(random <= 50) {              // 50% nothing
+            setImageView(new Image("/resources/Images/sand.png")); 
+            return;        
+        }
         else if(random <= 68) {         // 18% speed up
-            
+            setImageView(new Image("/resources/Images/boot.png")); 
+            isBoot = true;
         }
         else if(random <= 83) {         // 15% blast range increase
-
+            setImageView(new Image("/resources/Images/potion.png")); 
+            isPotion = true;
         }
         else if(random <= 95) {         // 12% bomb number increase
-
+            setImageView(new Image("/resources/Images/bomb.png")); 
+            isBomb = true;
         }
         else if(random <= 100) {        // 5% heart up
-
+            setImageView(new Image("/resources/Images/heart.png")); 
+            isHeart = true;
         }
     }
 
