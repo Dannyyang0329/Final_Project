@@ -16,6 +16,7 @@ public class Character extends Pane {
     int blastRange = 1;
     int speed = 2;
     int heart = 2;
+    boolean isInvincible = false;
 
     final int DISTANCE = 48;
     double deltaDistance = 0;

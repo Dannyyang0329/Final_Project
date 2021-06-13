@@ -9,6 +9,8 @@ public class Chunk {
     
     private boolean isBlocked = false;
     private boolean canCreateItem = false;
+
+    boolean isDangered = false;
     boolean isFiringBomb = false;
     boolean isWall = false;
 
@@ -21,7 +23,7 @@ public class Chunk {
         double random = Math.random()*100+1;
 
         if(random <= 50) {              // 50% nothing
-            setImageView(new Image("/resources/Images/sand.png")); 
+            setImageView(null); 
             return;        
         }
         else if(random <= 68) {         // 18% speed up
@@ -76,5 +78,14 @@ public class Chunk {
     }
     public boolean getCreatedItem() {
         return canCreateItem;
+    }
+
+
+
+    public void clearItem() {
+        isBoot = false; 
+        isBomb = false;
+        isPotion = false;
+        isHeart = false;
     }
 }

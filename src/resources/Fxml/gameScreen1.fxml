@@ -92,5 +92,24 @@
             <Image url="@../Images/blackImage.jpg" />
          </image>
       </ImageView>
+      <AnchorPane fx:id="gameOver1" layoutX="150.0" layoutY="100.0" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: Gray; -fx-border-color: DarkSlateGrey; -fx-border-width: 10;" visible="false">
+         <children>
+            <Button layoutX="238.0" layoutY="327.0" mnemonicParsing="false" onAction="#restart1" prefHeight="90.0" prefWidth="425.0" style="-fx-background-color: aqua; -fx-background-radius: 20;" text="Restart">
+               <font>
+                  <Font name="Rockwell" size="36.0" />
+               </font>
+            </Button>
+            <Button layoutX="238.0" layoutY="447.0" mnemonicParsing="false" onAction="#menu" prefHeight="90.0" prefWidth="425.0" style="-fx-background-color: aqua; -fx-background-radius: 20;" text="Back To Menu">
+               <font>
+                  <Font name="Rockwell" size="36.0" />
+               </font>
+            </Button>
+            <Label fx:id="label" alignment="CENTER" layoutX="132.0" layoutY="90.0" prefHeight="190.0" prefWidth="628.0" style="-fx-background-color: BurlyWood; -fx-background-radius: 30;" text="Player1 Lose !!!" textFill="RED">
+               <font>
+                  <Font name="Rockwell" size="84.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

@@ -7,53 +7,62 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 public class GameController {
     
     @FXML
-    AnchorPane pane;
+    AnchorPane pane, gameOver1, gameOver2;
 
     @FXML 
     ImageView blackView, mapImageView, playerImage1, playerImage2;
 
     @FXML
-    Label bombNumber1, bombNumber2, blastRange1, blastRange2, speed1, speed2, heart1, heart2;
+    Label bombNumber1, bombNumber2, blastRange1, blastRange2, speed1, speed2, heart1, heart2, label;
 
     long previousTime;
     AnimationTimer fadeOutTimer;
     AnimationTimer fadeInTimer;
 
-    // public Label getBombNumber1() {
-    //     return bombNumber1;
-    // }
-    // public Label getBombNumber2() {
-    //     return bombNumber2;
-    // }
-    // public Label getBlastRange1() {
-    //     return blastRange1;
-    // }
-    // public Label getBlastRange2() {
-    //     return blastRange2;
-    // }
-    // public Label getSpeed1() {
-    //     return speed1;
-    // }
-    // public Label getSpeed2() {
-    //     return speed2;
-    // }
-    // public Label getHeart1() {
-    //     return heart1;
-    // }
-    // public Label getHeart2() {
-    //     return heart2;
-    // }
-
     public void back(ActionEvent e) throws IOException {
         GameView.gameLoop.stop(); 
 
-        Parent root = FXMLLoader.load(getClass().getResource("/resources/Fxml/SelectScreen.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/resources/Fxml/selectScreen.fxml"));
+        Main.stage.setScene(new Scene(root));
+
+        SelectController.playerNumber1 = 0;
+        SelectController.playerNumber2 = 0;
+    }
+
+    public void restart1() throws IOException {
+        FXMLLoader loader = null;
+        loader = new FXMLLoader(getClass().getResource("/resources/Fxml/gameScreen1.fxml"));
+        Parent root = loader.load();
+
+        GameController controller = loader.getController();
+        controller.playerImage1.setImage(new Image("/resources/Images/character"+SelectController.playerNumber1+".png"));
+        
+        new GameView(SelectController.randomNum, controller, SelectController.playerNumber1);
+        Main.stage.setScene(new Scene(root));
+    }
+
+    public void restart2() throws IOException {
+        FXMLLoader loader = null;
+        loader = new FXMLLoader(getClass().getResource("/resources/Fxml/gameScreen2.fxml"));
+        Parent root = loader.load();
+
+        GameController controller = loader.getController();
+        controller.playerImage1.setImage(new Image("/resources/Images/character"+SelectController.playerNumber1+".png"));
+        controller.playerImage2.setImage(new Image("/resources/Images/character"+SelectController.playerNumber2+".png"));
+        
+        new GameView(SelectController.randomNum, controller, SelectController.playerNumber1, SelectController.playerNumber2);
+        Main.stage.setScene(new Scene(root));
+    }
+
+    public void menu() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/resources/Fxml/beginScreen.fxml"));
         Main.stage.setScene(new Scene(root));
     }
 

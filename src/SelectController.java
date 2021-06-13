@@ -27,8 +27,9 @@ public class SelectController {
     AnimationTimer fadeInTimer;
 
     boolean canNewGame = (GameView.isOnePlayer) ? true : false;
-    int playerNumber1 = 0;
-    int playerNumber2 = 0;
+    public static int playerNumber1 = 0;
+    public static int playerNumber2 = 0;
+    public static int randomNum = 0;
 
     public void back(ActionEvent e) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/resources/Fxml/beginScreen.fxml"));
@@ -339,6 +340,19 @@ public class SelectController {
 
     public void click10() throws IOException {
         label10.setVisible(true); 
+
+        if(GameView.isOnePlayer) playerNumber1 = 10;
+        if(GameView.isTwoPlayer) {
+            if(playerNumber1 == 0) {
+                playerNumber1 = 10;
+                return;
+            }
+            else {
+                if(playerNumber1 == 10) return;
+                else playerNumber2 = 10;
+            }
+        }
+
         blackView.setVisible(true);
 
         if(GameView.isOnePlayer) playerNumber1 = 10;
@@ -373,7 +387,7 @@ public class SelectController {
 
     public int randomMap(GameController control) {
 
-        int randomNum = (int)(Math.random()*TOTAL_LEVEL)+1;
+        randomNum = (int)(Math.random()*TOTAL_LEVEL)+1;
 
         if(mapImage[1] == null) {
             mapImage[1] = new Image("/resources/Images/map1.png");
