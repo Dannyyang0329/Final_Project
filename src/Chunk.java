@@ -10,9 +10,11 @@ public class Chunk {
     private boolean isBlocked = false;
     private boolean canCreateItem = false;
 
+    boolean isCareFul = false;
     boolean isDangered = false;
     boolean isFiringBomb = false;
     boolean isWall = false;
+    boolean isPlayer = false;
 
     boolean isBoot = false;
     boolean isPotion = false;
@@ -20,7 +22,7 @@ public class Chunk {
     boolean isHeart = false;
 
     public void createItem() {
-        double random = Math.random()*100+1;
+        int random = (int)(Math.random()*100)+1;
 
         if(random <= 50) {              // 50% nothing
             setImageView(null); 

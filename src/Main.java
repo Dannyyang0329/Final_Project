@@ -1,6 +1,4 @@
 
-import java.io.IOException;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,10 +19,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        initializeScene();
-    }
-
-    private void initializeScene() throws IOException {
         stage = new Stage();
         
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/Fxml/beginScreen.fxml"));

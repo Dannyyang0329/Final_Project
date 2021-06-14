@@ -12,10 +12,10 @@ public class Character extends Pane {
     int width = 48;
     int height = 48;
 
-    int bombNumber = 1;
-    int blastRange = 1;
-    int speed = 2;
-    int heart = 2;
+    int bombNumber = 1;     //1
+    int blastRange = 10;     //1
+    int speed = 5;          //2
+    int heart = 222;
     boolean isInvincible = false;
 
     final int DISTANCE = 48;
