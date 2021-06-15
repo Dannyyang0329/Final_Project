@@ -1,18 +1,18 @@
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class SelectController {
-
-    private final static int TOTAL_LEVEL = 1;
+public class SelectController implements Initializable {
 
     @FXML
     Label label1, label2, label3, label4, label5, label6, label7, label8, label9, label10;
@@ -20,17 +20,40 @@ public class SelectController {
     @FXML
     ImageView blackView;
 
-    private static Image mapImage[] = new Image[TOTAL_LEVEL+1];
+    @Override
+    public void initialize(URL arg0, ResourceBundle arg1) {
 
-    long previousTime;
-    AnimationTimer fadeOutTimer;
-    AnimationTimer fadeInTimer;
+        randomNum = (int)(Math.random()*TOTAL_LEVEL)+1;
+        new AnimationTimer(){
+            double previousTime = 0;
+            int delay = 1, duration = 1;
 
-    boolean canNewGame = (GameView.isOnePlayer) ? true : false;
+            @Override
+            public void handle(long now) {
+                if(previousTime == 0)  previousTime = now;       
+                else if(now-previousTime>delay*1.0e9 && now-previousTime<(delay+duration)*1.0e9) {
+                    blackView.setVisible(true);
+                    blackView.setOpacity(delay+1-(now-previousTime)/1.0e9);
+                }
+
+                if(now-previousTime >= (delay+duration)*1.0e9) {
+                    blackView.setVisible(false);
+                    stop();
+                }
+            }
+        }.start();
+    }
+
+    // There is only one map now QQ
+    private final static int TOTAL_LEVEL = 1;
+
     public static int playerNumber1 = 0;
     public static int playerNumber2 = 0;
     public static int randomNum = 0;
 
+
+
+    // back button
     public void back(ActionEvent e) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/resources/Fxml/beginScreen.fxml"));
         Main.stage.setScene(new Scene(root));
@@ -39,16 +62,21 @@ public class SelectController {
         GameView.isTwoPlayer = false;
     }
 
+    // select character 1
     public void click1() throws IOException {
+
         label1.setVisible(true); 
 
         if(GameView.isOnePlayer) playerNumber1 = 1;
         if(GameView.isTwoPlayer) {
+
+            // player1 hasn't selected yet.
             if(playerNumber1 == 0) {
                 playerNumber1 = 1;
                 return;
             }
             else {
+                // player2 can't select the same character as player1
                 if(playerNumber1 == 1) return;
                 else playerNumber2 = 1;
             }
@@ -61,27 +89,45 @@ public class SelectController {
         if(GameView.isTwoPlayer) loader = new FXMLLoader(getClass().getResource("/resources/Fxml/gameScreen2.fxml"));
         Parent root = loader.load();
 
-        GameController controller = loader.getController();
-        controller.playerImage1.setImage(new Image("/resources/Images/character"+playerNumber1+".png"));
-        if(GameView.isTwoPlayer) controller.playerImage2.setImage(new Image("/resources/Images/character"+playerNumber2+".png"));
-        
-        if(GameView.isOnePlayer) new GameView(randomMap(controller), controller, playerNumber1);
-        if(GameView.isTwoPlayer) new GameView(randomMap(controller), controller, playerNumber1, playerNumber2);
+        if(GameView.isOnePlayer) new GameView(loader.getController(), playerNumber1);
+        if(GameView.isTwoPlayer) new GameView(loader.getController(), playerNumber1, playerNumber2);
 
-        this.screenFadeOut(2, 1, root);
-        controller.screenFadeIn(3, 1);
+        // fade out
+        new AnimationTimer(){
+            double previousTime = 0;
+            int delay=1, duration=1;
+
+            @Override
+            public void handle(long now) {
+                if(previousTime == 0) previousTime = now;
+                else if(now-previousTime>delay*1.0e9 && now-previousTime<(delay+duration)*1.0e9) {
+                    blackView.setVisible(true);
+                    blackView.setOpacity((now-previousTime)/1.0e9-delay);
+                }
+
+                if(now-previousTime >= (delay+duration)*1.0e9) {
+                    Main.stage.setScene(new Scene(root));
+                    stop();
+                }
+            }
+        }.start();
     }
 
+    // select character 2
     public void click2() throws IOException {
+
         label2.setVisible(true); 
 
         if(GameView.isOnePlayer) playerNumber1 = 2;
         if(GameView.isTwoPlayer) {
+
+            // player1 hasn't selected yet.
             if(playerNumber1 == 0) {
                 playerNumber1 = 2;
                 return;
             }
             else {
+                // player2 can't select the same character as player1
                 if(playerNumber1 == 2) return;
                 else playerNumber2 = 2;
             }
@@ -94,29 +140,46 @@ public class SelectController {
         if(GameView.isTwoPlayer) loader = new FXMLLoader(getClass().getResource("/resources/Fxml/gameScreen2.fxml"));
         Parent root = loader.load();
 
-        GameController controller = loader.getController();
-        controller.playerImage1.setImage(new Image("/resources/Images/character"+playerNumber1+".png"));
-        if(GameView.isTwoPlayer) controller.playerImage2.setImage(new Image("/resources/Images/character"+playerNumber2+".png"));
+        if(GameView.isOnePlayer) new GameView(loader.getController(), playerNumber1);
+        if(GameView.isTwoPlayer) new GameView(loader.getController(), playerNumber1, playerNumber2);
 
-        
-        if(GameView.isOnePlayer) new GameView(randomMap(controller), controller, playerNumber1);
-        if(GameView.isTwoPlayer) new GameView(randomMap(controller), controller, playerNumber1, playerNumber2);
+        // fade out
+        new AnimationTimer(){
+            double previousTime = 0;
+            int delay=1, duration=1;
 
-        this.screenFadeOut(2, 1, root);
-        controller.screenFadeIn(3, 1);
+            @Override
+            public void handle(long now) {
+                if(previousTime == 0) previousTime = now;
+                else if(now-previousTime>delay*1.0e9 && now-previousTime<(delay+duration)*1.0e9) {
+                    blackView.setVisible(true);
+                    blackView.setOpacity((now-previousTime)/1.0e9-delay);
+                }
+
+                if(now-previousTime >= (delay+duration)*1.0e9) {
+                    Main.stage.setScene(new Scene(root));
+                    stop();
+                }
+            }
+        }.start();
     }
 
+    // select character 3
     public void click3() throws IOException {
+
         label3.setVisible(true); 
 
         if(GameView.isOnePlayer) playerNumber1 = 3;
         if(GameView.isTwoPlayer) {
+
+            // player1 hasn't selected yet.
             if(playerNumber1 == 0) {
                 playerNumber1 = 3;
                 return;
             }
             else {
-                if(playerNumber1 == 3) return;
+                // player2 can't select the same character as player1
+                if(playerNumber1 == 1) return;
                 else playerNumber2 = 3;
             }
         }
@@ -127,28 +190,46 @@ public class SelectController {
         if(GameView.isOnePlayer) loader = new FXMLLoader(getClass().getResource("/resources/Fxml/gameScreen1.fxml"));
         if(GameView.isTwoPlayer) loader = new FXMLLoader(getClass().getResource("/resources/Fxml/gameScreen2.fxml"));
         Parent root = loader.load();
-        
-        GameController controller = loader.getController();
-        controller.playerImage1.setImage(new Image("/resources/Images/character"+playerNumber1+".png"));
-        if(GameView.isTwoPlayer) controller.playerImage2.setImage(new Image("/resources/Images/character"+playerNumber2+".png"));
 
-        if(GameView.isOnePlayer) new GameView(randomMap(controller), controller, playerNumber1);
-        if(GameView.isTwoPlayer) new GameView(randomMap(controller), controller, playerNumber1, playerNumber2);
+        if(GameView.isOnePlayer) new GameView(loader.getController(), playerNumber1);
+        if(GameView.isTwoPlayer) new GameView(loader.getController(), playerNumber1, playerNumber2);
 
-        this.screenFadeOut(2, 1, root);
-        controller.screenFadeIn(3, 1);
+        // fade out
+        new AnimationTimer(){
+            double previousTime = 0;
+            int delay=1, duration=1;
+
+            @Override
+            public void handle(long now) {
+                if(previousTime == 0) previousTime = now;
+                else if(now-previousTime>delay*1.0e9 && now-previousTime<(delay+duration)*1.0e9) {
+                    blackView.setVisible(true);
+                    blackView.setOpacity((now-previousTime)/1.0e9-delay);
+                }
+
+                if(now-previousTime >= (delay+duration)*1.0e9) {
+                    Main.stage.setScene(new Scene(root));
+                    stop();
+                }
+            }
+        }.start();
     }
 
+    // select character 4
     public void click4() throws IOException {
+
         label4.setVisible(true); 
 
         if(GameView.isOnePlayer) playerNumber1 = 4;
         if(GameView.isTwoPlayer) {
+
+            // player1 hasn't selected yet.
             if(playerNumber1 == 0) {
                 playerNumber1 = 4;
                 return;
             }
             else {
+                // player2 can't select the same character as player1
                 if(playerNumber1 == 4) return;
                 else playerNumber2 = 4;
             }
@@ -160,28 +241,46 @@ public class SelectController {
         if(GameView.isOnePlayer) loader = new FXMLLoader(getClass().getResource("/resources/Fxml/gameScreen1.fxml"));
         if(GameView.isTwoPlayer) loader = new FXMLLoader(getClass().getResource("/resources/Fxml/gameScreen2.fxml"));
         Parent root = loader.load();
-        
-        GameController controller = loader.getController();
-        controller.playerImage1.setImage(new Image("/resources/Images/character"+playerNumber1+".png"));
-        if(GameView.isTwoPlayer) controller.playerImage2.setImage(new Image("/resources/Images/character"+playerNumber2+".png"));
 
-        if(GameView.isOnePlayer) new GameView(randomMap(controller), controller, playerNumber1);
-        if(GameView.isTwoPlayer) new GameView(randomMap(controller), controller, playerNumber1, playerNumber2);
+        if(GameView.isOnePlayer) new GameView(loader.getController(), playerNumber1);
+        if(GameView.isTwoPlayer) new GameView(loader.getController(), playerNumber1, playerNumber2);
 
-        this.screenFadeOut(2, 1, root);
-        controller.screenFadeIn(3, 1);
+        // fade out
+        new AnimationTimer(){
+            double previousTime = 0;
+            int delay=1, duration=1;
+
+            @Override
+            public void handle(long now) {
+                if(previousTime == 0) previousTime = now;
+                else if(now-previousTime>delay*1.0e9 && now-previousTime<(delay+duration)*1.0e9) {
+                    blackView.setVisible(true);
+                    blackView.setOpacity((now-previousTime)/1.0e9-delay);
+                }
+
+                if(now-previousTime >= (delay+duration)*1.0e9) {
+                    Main.stage.setScene(new Scene(root));
+                    stop();
+                }
+            }
+        }.start();
     }
 
+    // select character 5
     public void click5() throws IOException {
+
         label5.setVisible(true); 
-        
+
         if(GameView.isOnePlayer) playerNumber1 = 5;
         if(GameView.isTwoPlayer) {
+
+            // player1 hasn't selected yet.
             if(playerNumber1 == 0) {
                 playerNumber1 = 5;
                 return;
             }
             else {
+                // player2 can't select the same character as player1
                 if(playerNumber1 == 5) return;
                 else playerNumber2 = 5;
             }
@@ -194,27 +293,45 @@ public class SelectController {
         if(GameView.isTwoPlayer) loader = new FXMLLoader(getClass().getResource("/resources/Fxml/gameScreen2.fxml"));
         Parent root = loader.load();
 
-        GameController controller = loader.getController();
-        controller.playerImage1.setImage(new Image("/resources/Images/character"+playerNumber1+".png"));
-        if(GameView.isTwoPlayer) controller.playerImage2.setImage(new Image("/resources/Images/character"+playerNumber2+".png"));
-        
-        if(GameView.isOnePlayer) new GameView(randomMap(controller), controller, playerNumber1);
-        if(GameView.isTwoPlayer) new GameView(randomMap(controller), controller, playerNumber1, playerNumber2);
+        if(GameView.isOnePlayer) new GameView(loader.getController(), playerNumber1);
+        if(GameView.isTwoPlayer) new GameView(loader.getController(), playerNumber1, playerNumber2);
 
-        this.screenFadeOut(2, 1, root);
-        controller.screenFadeIn(3, 1);
+        // fade out
+        new AnimationTimer(){
+            double previousTime = 0;
+            int delay=1, duration=1;
+
+            @Override
+            public void handle(long now) {
+                if(previousTime == 0) previousTime = now;
+                else if(now-previousTime>delay*1.0e9 && now-previousTime<(delay+duration)*1.0e9) {
+                    blackView.setVisible(true);
+                    blackView.setOpacity((now-previousTime)/1.0e9-delay);
+                }
+
+                if(now-previousTime >= (delay+duration)*1.0e9) {
+                    Main.stage.setScene(new Scene(root));
+                    stop();
+                }
+            }
+        }.start();
     }
 
+    // select character 6
     public void click6() throws IOException {
+
         label6.setVisible(true); 
 
         if(GameView.isOnePlayer) playerNumber1 = 6;
         if(GameView.isTwoPlayer) {
+
+            // player1 hasn't selected yet.
             if(playerNumber1 == 0) {
                 playerNumber1 = 6;
                 return;
             }
             else {
+                // player2 can't select the same character as player1
                 if(playerNumber1 == 6) return;
                 else playerNumber2 = 6;
             }
@@ -227,27 +344,45 @@ public class SelectController {
         if(GameView.isTwoPlayer) loader = new FXMLLoader(getClass().getResource("/resources/Fxml/gameScreen2.fxml"));
         Parent root = loader.load();
 
-        GameController controller = loader.getController();
-        controller.playerImage1.setImage(new Image("/resources/Images/character"+playerNumber1+".png"));
-        if(GameView.isTwoPlayer) controller.playerImage2.setImage(new Image("/resources/Images/character"+playerNumber2+".png"));
+        if(GameView.isOnePlayer) new GameView(loader.getController(), playerNumber1);
+        if(GameView.isTwoPlayer) new GameView(loader.getController(), playerNumber1, playerNumber2);
 
-        if(GameView.isOnePlayer) new GameView(randomMap(controller), controller, playerNumber1);
-        if(GameView.isTwoPlayer) new GameView(randomMap(controller), controller, playerNumber1, playerNumber2);
+        // fade out
+        new AnimationTimer(){
+            double previousTime = 0;
+            int delay=1, duration=1;
 
-        this.screenFadeOut(2, 1, root);
-        controller.screenFadeIn(3, 1);
+            @Override
+            public void handle(long now) {
+                if(previousTime == 0) previousTime = now;
+                else if(now-previousTime>delay*1.0e9 && now-previousTime<(delay+duration)*1.0e9) {
+                    blackView.setVisible(true);
+                    blackView.setOpacity((now-previousTime)/1.0e9-delay);
+                }
+
+                if(now-previousTime >= (delay+duration)*1.0e9) {
+                    Main.stage.setScene(new Scene(root));
+                    stop();
+                }
+            }
+        }.start();
     }
 
+    // select character 7
     public void click7() throws IOException {
+
         label7.setVisible(true); 
 
         if(GameView.isOnePlayer) playerNumber1 = 7;
         if(GameView.isTwoPlayer) {
+
+            // player1 hasn't selected yet.
             if(playerNumber1 == 0) {
                 playerNumber1 = 7;
                 return;
             }
             else {
+                // player2 can't select the same character as player1
                 if(playerNumber1 == 7) return;
                 else playerNumber2 = 7;
             }
@@ -260,27 +395,45 @@ public class SelectController {
         if(GameView.isTwoPlayer) loader = new FXMLLoader(getClass().getResource("/resources/Fxml/gameScreen2.fxml"));
         Parent root = loader.load();
 
-        GameController controller = loader.getController();
-        controller.playerImage1.setImage(new Image("/resources/Images/character"+playerNumber1+".png"));
-        if(GameView.isTwoPlayer) controller.playerImage2.setImage(new Image("/resources/Images/character"+playerNumber2+".png"));
+        if(GameView.isOnePlayer) new GameView(loader.getController(), playerNumber1);
+        if(GameView.isTwoPlayer) new GameView(loader.getController(), playerNumber1, playerNumber2);
 
-        if(GameView.isOnePlayer) new GameView(randomMap(controller), controller, playerNumber1);
-        if(GameView.isTwoPlayer) new GameView(randomMap(controller), controller, playerNumber1, playerNumber2);
+        // fade out
+        new AnimationTimer(){
+            double previousTime = 0;
+            int delay=1, duration=1;
 
-        this.screenFadeOut(2, 1, root);
-        controller.screenFadeIn(3, 1);
+            @Override
+            public void handle(long now) {
+                if(previousTime == 0) previousTime = now;
+                else if(now-previousTime>delay*1.0e9 && now-previousTime<(delay+duration)*1.0e9) {
+                    blackView.setVisible(true);
+                    blackView.setOpacity((now-previousTime)/1.0e9-delay);
+                }
+
+                if(now-previousTime >= (delay+duration)*1.0e9) {
+                    Main.stage.setScene(new Scene(root));
+                    stop();
+                }
+            }
+        }.start();
     }
 
+    // select character 8
     public void click8() throws IOException {
+
         label8.setVisible(true); 
 
         if(GameView.isOnePlayer) playerNumber1 = 8;
         if(GameView.isTwoPlayer) {
+
+            // player1 hasn't selected yet.
             if(playerNumber1 == 0) {
                 playerNumber1 = 8;
                 return;
             }
             else {
+                // player2 can't select the same character as player1
                 if(playerNumber1 == 8) return;
                 else playerNumber2 = 8;
             }
@@ -293,28 +446,45 @@ public class SelectController {
         if(GameView.isTwoPlayer) loader = new FXMLLoader(getClass().getResource("/resources/Fxml/gameScreen2.fxml"));
         Parent root = loader.load();
 
-        GameController controller = loader.getController();
-        controller.playerImage1.setImage(new Image("/resources/Images/character"+playerNumber1+".png"));
-        if(GameView.isTwoPlayer) controller.playerImage2.setImage(new Image("/resources/Images/character"+playerNumber2+".png"));
-        
-        if(GameView.isOnePlayer) new GameView(randomMap(controller), controller, playerNumber1);
-        if(GameView.isTwoPlayer) new GameView(randomMap(controller), controller, playerNumber1, playerNumber2);
+        if(GameView.isOnePlayer) new GameView(loader.getController(), playerNumber1);
+        if(GameView.isTwoPlayer) new GameView(loader.getController(), playerNumber1, playerNumber2);
 
-        this.screenFadeOut(2, 1, root);
-        controller.screenFadeIn(3, 1);
+        // fade out
+        new AnimationTimer(){
+            double previousTime = 0;
+            int delay=1, duration=1;
+
+            @Override
+            public void handle(long now) {
+                if(previousTime == 0) previousTime = now;
+                else if(now-previousTime>delay*1.0e9 && now-previousTime<(delay+duration)*1.0e9) {
+                    blackView.setVisible(true);
+                    blackView.setOpacity((now-previousTime)/1.0e9-delay);
+                }
+
+                if(now-previousTime >= (delay+duration)*1.0e9) {
+                    Main.stage.setScene(new Scene(root));
+                    stop();
+                }
+            }
+        }.start();
     }
 
+    // select character 9
     public void click9() throws IOException {
+
         label9.setVisible(true); 
-        blackView.setVisible(true);
 
         if(GameView.isOnePlayer) playerNumber1 = 9;
         if(GameView.isTwoPlayer) {
+
+            // player1 hasn't selected yet.
             if(playerNumber1 == 0) {
                 playerNumber1 = 9;
                 return;
             }
             else {
+                // player2 can't select the same character as player1
                 if(playerNumber1 == 9) return;
                 else playerNumber2 = 9;
             }
@@ -327,41 +497,45 @@ public class SelectController {
         if(GameView.isTwoPlayer) loader = new FXMLLoader(getClass().getResource("/resources/Fxml/gameScreen2.fxml"));
         Parent root = loader.load();
 
-        GameController controller = loader.getController();
-        controller.playerImage1.setImage(new Image("/resources/Images/character"+playerNumber1+".png"));
-        if(GameView.isTwoPlayer) controller.playerImage2.setImage(new Image("/resources/Images/character"+playerNumber2+".png"));
-        
-        if(GameView.isOnePlayer) new GameView(randomMap(controller), controller, playerNumber1);
-        if(GameView.isTwoPlayer) new GameView(randomMap(controller), controller, playerNumber1, playerNumber2);
+        if(GameView.isOnePlayer) new GameView(loader.getController(), playerNumber1);
+        if(GameView.isTwoPlayer) new GameView(loader.getController(), playerNumber1, playerNumber2);
 
-        this.screenFadeOut(2, 1, root);
-        controller.screenFadeIn(3, 1);
+        // fade out
+        new AnimationTimer(){
+            double previousTime = 0;
+            int delay=1, duration=1;
+
+            @Override
+            public void handle(long now) {
+                if(previousTime == 0) previousTime = now;
+                else if(now-previousTime>delay*1.0e9 && now-previousTime<(delay+duration)*1.0e9) {
+                    blackView.setVisible(true);
+                    blackView.setOpacity((now-previousTime)/1.0e9-delay);
+                }
+
+                if(now-previousTime >= (delay+duration)*1.0e9) {
+                    Main.stage.setScene(new Scene(root));
+                    stop();
+                }
+            }
+        }.start();
     }
-
+   
+    // select character 10
     public void click10() throws IOException {
+
         label10.setVisible(true); 
 
         if(GameView.isOnePlayer) playerNumber1 = 10;
         if(GameView.isTwoPlayer) {
+
+            // player1 hasn't selected yet.
             if(playerNumber1 == 0) {
                 playerNumber1 = 10;
                 return;
             }
             else {
-                if(playerNumber1 == 10) return;
-                else playerNumber2 = 10;
-            }
-        }
-
-        blackView.setVisible(true);
-
-        if(GameView.isOnePlayer) playerNumber1 = 10;
-        if(GameView.isTwoPlayer) {
-            if(playerNumber1 == 0) {
-                playerNumber1 = 10;
-                return;
-            }
-            else {
+                // player2 can't select the same character as player1
                 if(playerNumber1 == 10) return;
                 else playerNumber2 = 10;
             }
@@ -374,35 +548,13 @@ public class SelectController {
         if(GameView.isTwoPlayer) loader = new FXMLLoader(getClass().getResource("/resources/Fxml/gameScreen2.fxml"));
         Parent root = loader.load();
 
-        GameController controller = loader.getController();
-        controller.playerImage1.setImage(new Image("/resources/Images/character"+playerNumber1+".png"));
-        if(GameView.isTwoPlayer) controller.playerImage2.setImage(new Image("/resources/Images/character"+playerNumber2+".png"));
-        
-        if(GameView.isOnePlayer) new GameView(randomMap(controller), controller, playerNumber1);
-        if(GameView.isTwoPlayer) new GameView(randomMap(controller), controller, playerNumber1, playerNumber2);
+        if(GameView.isOnePlayer) new GameView(loader.getController(), playerNumber1);
+        if(GameView.isTwoPlayer) new GameView(loader.getController(), playerNumber1, playerNumber2);
 
-        this.screenFadeOut(2, 1, root);
-        controller.screenFadeIn(3, 1);
-    }
-
-    public int randomMap(GameController control) {
-
-        randomNum = (int)(Math.random()*TOTAL_LEVEL)+1;
-
-        if(mapImage[1] == null) {
-            mapImage[1] = new Image("/resources/Images/map1.png");
-            // mapImage[2] = new Image("/resources/Images/map2.png");
-            // mapImage[3] = new Image("/resources/Images/map3.png");
-        }
-
-        control.mapImageView.setImage(mapImage[randomNum]);
-
-        return randomNum;
-    }
-
-    public void screenFadeOut(int delay, int duration, Parent root) {
-
-        fadeOutTimer = new AnimationTimer(){
+        // fade out
+        new AnimationTimer(){
+            double previousTime = 0;
+            int delay=1, duration=1;
 
             @Override
             public void handle(long now) {
@@ -413,38 +565,11 @@ public class SelectController {
                 }
 
                 if(now-previousTime >= (delay+duration)*1.0e9) {
-                    previousTime = 0;
-
                     Main.stage.setScene(new Scene(root));
-                    fadeOutTimer.stop();
+                    stop();
                 }
             }
-        };
-
-        fadeOutTimer.start();
+        }.start();
     }
 
-    public void screenFadeIn(int delay, int duration) {
-
-        fadeInTimer = new AnimationTimer(){
-
-            @Override
-            public void handle(long now) {
-                if(previousTime == 0)  previousTime = now;       
-                else if(now-previousTime>delay*1.0e9 && now-previousTime<(delay+duration)*1.0e9) {
-                    blackView.setVisible(true);
-                    blackView.setOpacity(delay+1-(now-previousTime)/1.0e9);
-                }
-
-                if(now-previousTime >= (delay+duration)*1.0e9) {
-                    previousTime = 0;
-
-                    blackView.setVisible(false);
-                    fadeInTimer.stop();
-                }
-            }
-        };
-
-        fadeInTimer.start();
-    }
 }

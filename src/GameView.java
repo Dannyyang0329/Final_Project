@@ -11,15 +11,15 @@ import javafx.scene.paint.Color;
 
 public class GameView {
 
-    GameController controller;
-    AnchorPane pane, gameOver1, gameOver2;
-    Chunk chunk[][];
+    private GameController controller;
+    private AnchorPane pane, gameOver1, gameOver2;
+    private Chunk chunk[][];
     private int mapNum;
     private int playerAlive = 4;
 
-    Character player1;
-    Character player2;
-    AIPlayer AI1, AI2, AI3;
+    private Character player1;
+    private Character player2;
+    private AIPlayer AI1, AI2, AI3;
     private int playerNumber1 = 1;
     private int playerNumber2 = 1;
     private int AINumber1 = 1;
@@ -31,9 +31,6 @@ public class GameView {
 
     private boolean playerNorth1, playerSouth1, playerWest1, playerEast1;
     private boolean playerNorth2, playerSouth2, playerWest2, playerEast2;
-    private boolean AINorth1, AISouth1, AIWest1, AIEast1;
-    private boolean AINorth2, AISouth2, AIWest2, AIEast2;
-    private boolean AINorth3, AISouth3, AIWest3, AIEast3;
 
     private boolean north1, south1, west1, east1;
     private boolean north2, south2, west2, east2;
@@ -53,9 +50,9 @@ public class GameView {
         {}, 
         {
             {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-            {1,0,0,2,2,2,2,2,0,0,2,2,2,2,0,0,1},
+            {1,0,0,0,2,2,2,2,0,0,2,2,2,0,0,0,1},
             {1,0,1,2,1,2,1,2,1,0,1,2,1,2,1,0,1},
-            {1,2,2,2,2,0,2,2,2,2,2,0,2,2,2,2,1},
+            {1,0,2,2,2,0,2,2,2,2,2,0,2,2,2,0,1},
             {1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1},
             {1,2,2,2,2,0,2,2,2,2,2,2,2,2,2,2,1},
             {1,0,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1},
@@ -63,20 +60,22 @@ public class GameView {
             {1,2,1,2,1,2,1,1,1,1,1,2,1,2,1,2,1},
             {1,2,2,2,2,0,2,2,2,0,2,2,2,2,2,2,1},
             {1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1},
-            {1,2,2,2,2,0,2,2,2,2,2,2,2,2,2,2,1},
+            {1,0,2,2,2,0,2,2,2,2,2,2,2,2,2,0,1},
             {1,0,1,2,1,2,1,0,1,2,1,2,1,2,1,0,1},
-            {1,0,0,2,2,2,2,0,0,0,2,2,2,2,0,0,1},
+            {1,0,0,0,2,2,2,0,0,0,2,2,2,0,0,0,1},
             {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
         }
     };
 
-    public GameView(int mapNum, GameController controller, int playerNumber1) {
-        this.mapNum = mapNum;
+    // constructor
+    public GameView(GameController controller, int playerNumber1) {
+
+        this.mapNum = SelectController.randomNum;
         this.controller = controller;
         this.playerNumber1 = playerNumber1;
 
-        pane = controller.pane;
-        gameOver1 = controller.gameOver1;
+        this.pane = controller.pane;
+        this.gameOver1 = controller.gameOver1;
 
         loadChunk();
         loadPlayers();
@@ -85,14 +84,15 @@ public class GameView {
 
         startGameLoop();
     }
-    public GameView(int mapNum, GameController controller, int playerNumber1, int playerNumber2) {
-        this.mapNum = mapNum;
+    public GameView(GameController controller, int playerNumber1, int playerNumber2) {
+
+        this.mapNum = SelectController.randomNum;
         this.controller = controller;
         this.playerNumber1 = playerNumber1;
         this.playerNumber2 = playerNumber2;
 
-        pane = controller.pane;
-        gameOver2 = controller.gameOver2;
+        this.pane = controller.pane;
+        this.gameOver2 = controller.gameOver2;
 
         loadChunk();
         loadPlayers();
@@ -111,25 +111,27 @@ public class GameView {
 
                 chunk[i][j] = new Chunk();
 
+                // Road
                 if(map[mapNum][i][j] == 0) {
                     chunk[i][j].setBlocked(false);
                     chunk[i][j].setImageView(null);
                     chunk[i][j].imageView.setLayoutX(300+48*j);
                     chunk[i][j].imageView.setLayoutY(40+48*i);
-
                     pane.getChildren().add(chunk[i][j].imageView);
                 }
-                if(map[mapNum][i][j] == 1) {
+                // Wall
+                else if(map[mapNum][i][j] == 1) {
                     chunk[i][j].setBlocked(true);
-                    chunk[i][j].isWall = true;
+                    chunk[i][j].setWall(true);
                 }
-                if(map[mapNum][i][j] == 2) {
+
+                // Box
+                else if(map[mapNum][i][j] == 2) {
                     chunk[i][j].setBlocked(true);
                     chunk[i][j].setCreatedItem(true);
                     chunk[i][j].setImageView(new Image("/resources/Images/box.png"));
                     chunk[i][j].imageView.setLayoutX(300+48*j);
                     chunk[i][j].imageView.setLayoutY(40+48*i);
-
                     pane.getChildren().add(chunk[i][j].imageView);
                 }
             }
@@ -137,45 +139,49 @@ public class GameView {
     }
 
     private void loadPlayers() {
+        // Add player 1
         player1 = new Character(new ImageView(new Image("/resources/Images/sprite"+playerNumber1+".png")));
         player1.setLayoutX(348);
         player1.setLayoutY(88);
         player1.setChunk(1, 1);
-        chunk[1][1].isPlayer = true;
         player1.animation.play();
         pane.getChildren().add(player1);
+        chunk[1][1].setPlayer(true);
 
+        // Add player 2
         if(isTwoPlayer) {
             player2 = new Character(new ImageView(new Image("/resources/Images/sprite"+playerNumber2+".png")));
             player2.setLayoutX(1020);
             player2.setLayoutY(664);
             player2.setChunk(13, 15);
-            chunk[13][15].isPlayer = true;
             player2.animation.play();
             pane.getChildren().add(player2);
+            chunk[13][15].setPlayer(true);
         }
 
-        // AI  
+        // Add AI 1  
         AINumber1 = (int)(Math.random()*10)+1;
         while(AINumber1 == playerNumber1 || AINumber1 == playerNumber2) AINumber1 = (int)(Math.random()*10)+1;
         AI1 = new AIPlayer(new ImageView(new Image("/resources/Images/sprite"+AINumber1+".png")), chunk);
         AI1.setLayoutX(1020);
         AI1.setLayoutY(88);
         AI1.setChunk(1, 15);
-        chunk[1][15].isPlayer = true;
         AI1.animation.play();
         pane.getChildren().add(AI1);
+        chunk[1][15].setPlayer(true);
 
+        // Add AI 2
         AINumber2 = (int)(Math.random())+1;
         while(AINumber2 == playerNumber1 || AINumber2 == playerNumber2 || AINumber2 == AINumber1) AINumber2 = (int)(Math.random()*10)+1;
         AI2 = new AIPlayer(new ImageView(new Image("/resources/Images/sprite"+AINumber2+".png")), chunk);
         AI2.setLayoutX(348);
         AI2.setLayoutY(664);
         AI2.setChunk(13, 1);
-        chunk[13][1].isPlayer = true;
         AI2.animation.play();
         pane.getChildren().add(AI2);
+        chunk[13][1].setPlayer(true);
 
+        // Add AI 3
         if(isOnePlayer) {
             AINumber3 = (int)(Math.random())+1;
             while(AINumber3 == playerNumber1 || AINumber3 == playerNumber2 || AINumber3 == AINumber1 || AINumber3 == AINumber2) AINumber3 = (int)(Math.random()*10)+1;
@@ -183,9 +189,9 @@ public class GameView {
             AI3.setLayoutX(1020);
             AI3.setLayoutY(664);
             AI3.setChunk(13, 15);
-            chunk[13][15].isPlayer = true;
             AI3.animation.play();
             pane.getChildren().add(AI3);
+            chunk[13][15].setPlayer(true);
         }
     }
 
@@ -198,7 +204,8 @@ public class GameView {
 
                 KeyCode in = e.getCode();
 
-                if(in == KeyCode.SPACE) if(!chunk[player1.Y][player1.X].isFiringBomb) setBomb(1);
+                // Control player 1
+                if(in == KeyCode.SPACE) if(!chunk[player1.Y][player1.X].getFiringBomb()) setBomb(1);
                 if(playerIsPress1 == false) {
                     if(in == KeyCode.W) {
                         if(chunk[player1.Y-1][player1.X].getBlocked()) {
@@ -231,11 +238,11 @@ public class GameView {
                         }
                         else playerEast1 = true;
                     }
-
                 }
 
+                // Control player 2
                 if(isTwoPlayer) {
-                    if(in == KeyCode.ENTER) if(!chunk[player2.Y][player2.X].isFiringBomb) setBomb(2);
+                    if(in == KeyCode.ENTER) if(!chunk[player2.Y][player2.X].getFiringBomb()) setBomb(2);
                     if(!playerIsPress2) {
                         
                         if(in == KeyCode.UP) {
@@ -294,82 +301,291 @@ public class GameView {
         });    
     }
 
+    private void startGameLoop() {
+        gameLoop = new AnimationTimer() {
+
+            @Override
+            public void handle(long now) {
+
+                // player1
+                if(!player1.isDead) {
+                    if(playerNorth1) playerGo(1, 'N');
+                    else if(playerSouth1) playerGo(1, 'S');
+                    else if(playerWest1) playerGo(1, 'W');
+                    else if(playerEast1) playerGo(1, 'E');
+                }
+
+                // player2
+                if(isTwoPlayer && !player2.isDead) {
+                    if(playerNorth2) playerGo(2, 'N');
+                    else if(playerSouth2) playerGo(2, 'S');
+                    else if(playerWest2) playerGo(2, 'W');
+                    else if(playerEast2) playerGo(2, 'E');
+                }
+
+                // AI1
+                if(!AI1.isDead) {
+                    AI1.setAiMap(chunk);
+                    if(!AIIsPress1) playerGo(3, AI1.getMoveDir());
+                }
+
+                // AI2
+                if(!AI2.isDead) {
+                    AI2.setAiMap(chunk);
+                    if(!AIIsPress2) playerGo(4, AI2.getMoveDir());
+                }
+
+                // AI3
+                if(isOnePlayer && !AI3.isDead) {
+                    AI3.setAiMap(chunk);
+                    if(!AIIsPress3) playerGo(5, AI3.getMoveDir());
+                }
+
+
+                playerWalk(1);
+                if(isTwoPlayer) playerWalk(2);
+
+                playerWalk(3);
+                playerWalk(4);
+                if(isOnePlayer) playerWalk(5);
+
+
+                // player1
+                // Speed
+                if(chunk[player1.Y][player1.X].isBoot) { 
+                    chunk[player1.Y][player1.X].setImageView(null);
+                    chunk[player1.Y][player1.X].isBoot = false;
+                    if(player1.speed < 7) {
+                        player1.speed++;
+                        controller.speed1.setText(Integer.toString(player1.speed));
+                    }
+                }
+                // Blast Range
+                else if(chunk[player1.Y][player1.X].isPotion) {
+                    chunk[player1.Y][player1.X].setImageView(null);
+                    chunk[player1.Y][player1.X].isPotion = false;
+                    if(player1.blastRange < 5) {
+                        player1.blastRange++;
+                        controller.blastRange1.setText(Integer.toString(player1.blastRange));
+                    }
+                }
+                // Bomb Number
+                else if(chunk[player1.Y][player1.X].isBomb) {
+                    chunk[player1.Y][player1.X].setImageView(null);
+                    chunk[player1.Y][player1.X].isBomb = false;
+                    if(player1.bombNumber < 3) { 
+                        player1.bombNumber++;
+                        controller.bombNumber1.setText(Integer.toString(player1.bombNumber));
+                    }
+                }
+                // Heart
+                else if(chunk[player1.Y][player1.X].isHeart) {
+                    chunk[player1.Y][player1.X].setImageView(null);
+                    chunk[player1.Y][player1.X].isHeart = false;
+                    if(player1.heart < 5) {
+                        player1.heart++;
+                        controller.heart1.setText(Integer.toString(player1.heart));
+                    }
+                }
+
+
+                // player2
+                if(isTwoPlayer) {
+                    // Speed
+                    if(chunk[player2.Y][player2.X].isBoot) { 
+                        chunk[player2.Y][player2.X].setImageView(null);
+                        chunk[player2.Y][player2.X].isBoot = false;
+                        if(player2.speed < 7) {
+                            player2.speed++;
+                            controller.speed2.setText(Integer.toString(player2.speed));
+                        }
+                    }
+                    // Blast Range
+                    else if(chunk[player2.Y][player2.X].isPotion) {
+                        chunk[player2.Y][player2.X].setImageView(null);
+                        chunk[player2.Y][player2.X].isPotion = false;
+                        if(player2.blastRange < 5) {
+                            player2.blastRange++;
+                            controller.blastRange2.setText(Integer.toString(player2.blastRange));
+                        }
+                    }
+                    // Bomb Number
+                    else if(chunk[player2.Y][player2.X].isBomb) {
+                        chunk[player2.Y][player2.X].setImageView(null);
+                        chunk[player2.Y][player2.X].isBomb = false;
+                        if(player2.bombNumber < 3) {
+                            player2.bombNumber++;
+                            controller.bombNumber2.setText(Integer.toString(player2.bombNumber));
+                        }
+                    }
+                    // Heart
+                    else if(chunk[player2.Y][player2.X].isHeart) {
+                        chunk[player2.Y][player2.X].setImageView(null);
+                        chunk[player2.Y][player2.X].isHeart = false;
+                        if(player2.heart < 5) {
+                            player2.heart++;
+                            controller.heart2.setText(Integer.toString(player2.heart));
+                        }
+                    }
+                }
+
+                // AI1
+                // Speed
+                if(chunk[AI1.Y][AI1.X].isBoot) { 
+                    chunk[AI1.Y][AI1.X].setImageView(null);
+                    chunk[AI1.Y][AI1.X].isBoot = false;
+                    if(AI1.speed < 4) AI1.speed++;
+                }
+                // Blast Range
+                else if(chunk[AI1.Y][AI1.X].isPotion) {
+                    chunk[AI1.Y][AI1.X].setImageView(null);
+                    chunk[AI1.Y][AI1.X].isPotion = false;
+                    if(AI1.blastRange < 4) AI1.blastRange++;
+                }
+                // Bomb Number
+                else if(chunk[AI1.Y][AI1.X].isBomb) {
+                    chunk[AI1.Y][AI1.X].setImageView(null);
+                    chunk[AI1.Y][AI1.X].isBomb = false;
+                    if(AI1.bombNumber < 2) AI1.bombNumber++;
+                }
+                // Heart
+                else if(chunk[AI1.Y][AI1.X].isHeart) {
+                    chunk[AI1.Y][AI1.X].setImageView(null);
+                    chunk[AI1.Y][AI1.X].isHeart = false;
+                    AI1.heart++;
+                }
+
+                // AI2
+                // Speed
+                if(chunk[AI2.Y][AI2.X].isBoot) { 
+                    chunk[AI2.Y][AI2.X].setImageView(null);
+                    chunk[AI2.Y][AI2.X].isBoot = false;
+                    if(AI2.speed < 4) AI1.speed++;
+                }
+                // Blast Range
+                else if(chunk[AI2.Y][AI2.X].isPotion) {
+                    chunk[AI2.Y][AI2.X].setImageView(null);
+                    chunk[AI2.Y][AI2.X].isPotion = false;
+                    if(AI2.blastRange < 4) AI1.blastRange++;
+                }
+                // Bomb Number
+                else if(chunk[AI2.Y][AI2.X].isBomb) {
+                    chunk[AI2.Y][AI2.X].setImageView(null);
+                    chunk[AI2.Y][AI2.X].isBomb = false;
+                    if(AI2.bombNumber < 2) AI2.bombNumber++;
+                }
+                // Heart
+                else if(chunk[AI2.Y][AI2.X].isHeart) {
+                    chunk[AI2.Y][AI2.X].setImageView(null);
+                    chunk[AI2.Y][AI2.X].isHeart = false;
+                    AI2.heart++;
+                }
+
+                if(isOnePlayer) {
+                    // AI3
+                    // Speed
+                    if(chunk[AI3.Y][AI3.X].isBoot) { 
+                        chunk[AI3.Y][AI3.X].setImageView(null);
+                        chunk[AI3.Y][AI3.X].isBoot = false;
+                        if(AI3.speed < 4) AI1.speed++;
+                    }
+                    // Blast Range
+                    else if(chunk[AI3.Y][AI3.X].isPotion) {
+                        chunk[AI3.Y][AI3.X].setImageView(null);
+                        chunk[AI3.Y][AI3.X].isPotion = false;
+                        if(AI3.blastRange < 4) AI1.blastRange++;
+                    }
+                    // Bomb Number
+                    else if(chunk[AI3.Y][AI3.X].isBomb) {
+                        chunk[AI3.Y][AI3.X].setImageView(null);
+                        chunk[AI3.Y][AI3.X].isBomb = false;
+                        if(AI3.bombNumber < 2) AI3.bombNumber++;
+                    }
+                    // Heart
+                    else if(chunk[AI3.Y][AI3.X].isHeart) {
+                        chunk[AI3.Y][AI3.X].setImageView(null);
+                        chunk[AI3.Y][AI3.X].isHeart = false;
+                        AI3.heart++;
+                    }
+                }
+                
+                if(isOnePlayer) {
+                    if(!player1.isInvincible) try { damage(1); } catch (IOException e) { e.printStackTrace();} 
+                    if(!AI1.isInvincible) try { damage(3); } catch (IOException e) { e.printStackTrace();} 
+                    if(!AI2.isInvincible) try { damage(4); } catch (IOException e) { e.printStackTrace();} 
+                    if(!AI3.isInvincible) try { damage(5); } catch (IOException e) { e.printStackTrace();} 
+                }
+                else {
+                    if(!player1.isInvincible) try { damage(1); } catch (IOException e) { e.printStackTrace();}
+                    if(!player2.isInvincible) try { damage(2); } catch (IOException e) { e.printStackTrace();}
+                    if(!AI1.isInvincible) try { damage(3); } catch (IOException e) { e.printStackTrace();}
+                    if(!AI2.isInvincible) try { damage(4); } catch (IOException e) { e.printStackTrace();}
+                }
+            }
+        };
+
+        gameLoop.start();
+    }
+
     private void playerGo(int num, char dir) {
 
         if(num == 1) {
             if(dir == 'N') {
-                if(!chunk[player1.Y-1][player1.X].getBlocked()) {
-                    playerIsPress1 = true;
-                    north1 = true;
+                playerIsPress1 = true;
+                north1 = true;
 
-                    stepPause(1);
-                }
+                stepPause(1);
             }
-            if(dir == 'S') {
-                if(!chunk[player1.Y+1][player1.X].getBlocked()) {
-                    playerIsPress1 = true;
-                    south1 = true;
+            else if(dir == 'S') {
+                playerIsPress1 = true;
+                south1 = true;
 
-                    stepPause(1);
-                }
+                stepPause(1);
             }
-            if(dir == 'E') {
-                if(!chunk[player1.Y][player1.X+1].getBlocked()) {
-                    playerIsPress1 = true;
-                    east1 = true;
+            else if(dir == 'E') {
+                playerIsPress1 = true;
+                east1 = true;
 
-                    stepPause(1);
-                }
-
+                stepPause(1);
             }
-            if(dir == 'W') {
-                if(!chunk[player1.Y][player1.X-1].getBlocked()) {
-                    playerIsPress1 = true;
-                    west1 = true;
+            else if(dir == 'W') {
+                playerIsPress1 = true;
+                west1 = true;
 
-                    stepPause(1);
-                }
+                stepPause(1);
             }
         }
 
-        if(num == 2) {
+        else if(num == 2) {
             if(dir == 'N') {
-                if(!chunk[player2.Y-1][player2.X].getBlocked()) {
-                    playerIsPress2 = true;
-                    north2 = true;
+                playerIsPress2 = true;
+                north2 = true;
 
-                    stepPause(2);
-                }
+                stepPause(2);
             }
-            if(dir == 'S') {
-                if(!chunk[player2.Y+1][player2.X].getBlocked()) {
-                    playerIsPress2 = true;
-                    south2 = true;
+            else if(dir == 'S') {
+                playerIsPress2 = true;
+                south2 = true;
 
-                    stepPause(2);
-                }
+                stepPause(2);
             }
-            if(dir == 'E') {
-                if(!chunk[player2.Y][player2.X+1].getBlocked()) {
-                    playerIsPress2 = true;
-                    east2 = true;
+            else if(dir == 'E') {
+                playerIsPress2 = true;
+                east2 = true;
 
-                    stepPause(2);
-                }
-
+                stepPause(2);
             }
-            if(dir == 'W') {
-                if(!chunk[player2.Y][player2.X-1].getBlocked()) {
-                    playerIsPress2 = true;
-                    west2 = true;
+            else if(dir == 'W') {
+                playerIsPress2 = true;
+                west2 = true;
 
-                    stepPause(2);
-                }
+                stepPause(2);
             }
         }
     
-        if(num == 3) {
-            if(dir == 'N') {
+        else if(num == 3) {
+            if(dir == 'P') return;
+            else if(dir == 'N') {
                 if(!chunk[AI1.Y-1][AI1.X].getBlocked()) {
                     AIIsPress1 = true;
                     north3 = true;
@@ -377,7 +593,7 @@ public class GameView {
                     stepPause(3);
                 }
             }
-            if(dir == 'S') {
+            else if(dir == 'S') {
                 if(!chunk[AI1.Y+1][AI1.X].getBlocked()) {
                     AIIsPress1 = true;
                     south3 = true;
@@ -385,7 +601,7 @@ public class GameView {
                     stepPause(3);
                 }
             }
-            if(dir == 'E') {
+            else if(dir == 'E') {
                 if(!chunk[AI1.Y][AI1.X+1].getBlocked()) {
                     AIIsPress1 = true;
                     east3 = true;
@@ -393,7 +609,7 @@ public class GameView {
                     stepPause(3);
                 }
             }
-            if(dir == 'W') {
+            else if(dir == 'W') {
                 if(!chunk[AI1.Y][AI1.X-1].getBlocked()) {
                     AIIsPress1 = true;
                     west3 = true;
@@ -401,10 +617,14 @@ public class GameView {
                     stepPause(3);
                 }
             }
+            else if(dir == 'B') {
+                setBomb(3);
+            }
         }
     
-        if(num == 4) {
-            if(dir == 'N') {
+        else if(num == 4) {
+            if(dir == 'P') return;
+            else if(dir == 'N') {
                 if(!chunk[AI2.Y-1][AI2.X].getBlocked()) {
                     AIIsPress2 = true;
                     north4 = true;
@@ -412,7 +632,7 @@ public class GameView {
                     stepPause(4);
                 }
             }
-            if(dir == 'S') {
+            else if(dir == 'S') {
                 if(!chunk[AI2.Y+1][AI2.X].getBlocked()) {
                     AIIsPress2 = true;
                     south4 = true;
@@ -420,7 +640,7 @@ public class GameView {
                     stepPause(4);
                 }
             }
-            if(dir == 'E') {
+            else if(dir == 'E') {
                 if(!chunk[AI2.Y][AI2.X+1].getBlocked()) {
                     AIIsPress2 = true;
                     east4 = true;
@@ -428,7 +648,7 @@ public class GameView {
                     stepPause(4);
                 }
             }
-            if(dir == 'W') {
+            else if(dir == 'W') {
                 if(!chunk[AI2.Y][AI2.X-1].getBlocked()) {
                     AIIsPress2 = true;
                     west4 = true;
@@ -436,10 +656,14 @@ public class GameView {
                     stepPause(4);
                 }
             }
+            else if(dir == 'B') {
+                setBomb(4);
+            }
         }
     
-        if(num == 5) {
-            if(dir == 'N') {
+        else if(num == 5) {
+            if(dir == 'P') return;
+            else if(dir == 'N') {
                 if(!chunk[AI3.Y-1][AI3.X].getBlocked()) {
                     AIIsPress3 = true;
                     north5 = true;
@@ -447,7 +671,7 @@ public class GameView {
                     stepPause(5);
                 }
             }
-            if(dir == 'S') {
+            else if(dir == 'S') {
                 if(!chunk[AI3.Y+1][AI3.X].getBlocked()) {
                     AIIsPress3 = true;
                     south5 = true;
@@ -455,7 +679,7 @@ public class GameView {
                     stepPause(5);
                 }
             }
-            if(dir == 'E') {
+            else if(dir == 'E') {
                 if(!chunk[AI3.Y][AI3.X+1].getBlocked()) {
                     AIIsPress3 = true;
                     east5 = true;
@@ -463,13 +687,16 @@ public class GameView {
                     stepPause(5);
                 }
             }
-            if(dir == 'W') {
+            else if(dir == 'W') {
                 if(!chunk[AI3.Y][AI3.X-1].getBlocked()) {
                     AIIsPress3 = true;
                     west5 = true;
 
                     stepPause(5);
                 }
+            }
+            else if(dir == 'B') {
+                setBomb(5);
             }
         }
     }
@@ -481,13 +708,13 @@ public class GameView {
                 @Override
                 public void handle(long now) {
                     if(player1.deltaDistance >= 48) {
-                        chunk[player1.Y][player1.X].isPlayer = false;
+                        chunk[player1.Y][player1.X].setPlayer(false);
                         if(north1) player1.Y--;
                         else if(south1) player1.Y++;
                         else if(east1)  player1.X++;
                         else if(west1)  player1.X--;
 
-                        chunk[player1.Y][player1.X].isPlayer = true;
+                        chunk[player1.Y][player1.X].setPlayer(true);
                         playerIsPress1 = false;
                         north1 = false;  
                         east1 = false;
@@ -500,18 +727,20 @@ public class GameView {
             }.start();
         }
 
-        if(num == 2) {
+        else if(num == 2) {
+
             new AnimationTimer() {
+
                 @Override
                 public void handle(long now) {
                     if(player2.deltaDistance >= 48) {
-                        chunk[player2.Y][player2.X].isPlayer = false;
+                        chunk[player2.Y][player2.X].setPlayer(false);
                         if(north2) player2.Y--;
                         else if(south2) player2.Y++;
                         else if(east2)  player2.X++;
                         else if(west2)  player2.X--;
 
-                        chunk[player2.Y][player2.X].isPlayer = true;
+                        chunk[player2.Y][player2.X].setPlayer(true);
                         playerIsPress2 = false;
                         north2 = false;  
                         east2 = false;
@@ -521,21 +750,22 @@ public class GameView {
                         stop();
                     }
                 }
+
             }.start();
         }
     
-        if(num == 3) {
+        else if(num == 3) {
             new AnimationTimer() {
                 @Override
                 public void handle(long now) {
                     if(AI1.deltaDistance >= 48) {
-                        chunk[AI1.Y][AI1.X].isPlayer = false;
+                        chunk[AI1.Y][AI1.X].setPlayer(false);
                         if(north3) AI1.Y--;
                         else if(south3) AI1.Y++;
                         else if(east3)  AI1.X++;
                         else if(west3)  AI1.X--;
 
-                        chunk[AI1.Y][AI1.X].isPlayer = true;
+                        chunk[AI1.Y][AI1.X].setPlayer(true);
                         AIIsPress1 = false;
                         north3 = false;  
                         east3 = false;
@@ -548,18 +778,18 @@ public class GameView {
             }.start();
         }
     
-        if(num == 4) {
+        else if(num == 4) {
             new AnimationTimer() {
                 @Override
                 public void handle(long now) {
                     if(AI2.deltaDistance >= 48) {
-                        chunk[AI2.Y][AI2.X].isPlayer = false;
+                        chunk[AI2.Y][AI2.X].setPlayer(false);
                         if(north4) AI2.Y--;
                         else if(south4) AI2.Y++;
                         else if(east4)  AI2.X++;
                         else if(west4)  AI2.X--;
 
-                        chunk[AI2.Y][AI2.X].isPlayer = true;
+                        chunk[AI2.Y][AI2.X].setPlayer(true);
                         AIIsPress2 = false;
                         north4 = false;  
                         east4 = false;
@@ -572,18 +802,18 @@ public class GameView {
             }.start();
         }
         
-        if(num == 5) {
+        else if(num == 5) {
             new AnimationTimer() {
                 @Override
                 public void handle(long now) {
                     if(AI3.deltaDistance >= 48) {
-                        chunk[AI3.Y][AI3.X].isPlayer = false;
+                        chunk[AI3.Y][AI3.X].setPlayer(false);
                         if(north5) AI3.Y--;
                         else if(south5) AI3.Y++;
                         else if(east5)  AI3.X++;
                         else if(west5)  AI3.X--;
 
-                        chunk[AI3.Y][AI3.X].isPlayer = true;
+                        chunk[AI3.Y][AI3.X].setPlayer(true);
                         AIIsPress3 = false;
                         north5 = false;  
                         east5 = false;
@@ -596,202 +826,7 @@ public class GameView {
             }.start();
         }
     }
-
-    private void startGameLoop() {
-        gameLoop = new AnimationTimer(){
-
-            @Override
-            public void handle(long now) {
-
-                // player1
-                if(playerNorth1) playerGo(1, 'N');
-                else if(playerSouth1) playerGo(1, 'S');
-                else if(playerWest1) playerGo(1, 'W');
-                else if(playerEast1) playerGo(1, 'E');
-
-                // player2
-                if(isTwoPlayer) {
-                    if(playerNorth2) playerGo(2, 'N');
-                    else if(playerSouth2) playerGo(2, 'S');
-                    else if(playerWest2) playerGo(2, 'W');
-                    else if(playerEast2) playerGo(2, 'E');
-                }
-
-                AI1.setAiMap(chunk);
-                if(!AIIsPress1) playerGo(3, AI1.getMoveDir());
-                AI2.setAiMap(chunk);
-                if(!AIIsPress2) playerGo(4, AI2.getMoveDir());
-                if(isOnePlayer) {
-                    AI3.setAiMap(chunk);
-                    if(!AIIsPress3) playerGo(5, AI3.getMoveDir());
-                }
-
-
-                playerWalk(1);
-                if(isTwoPlayer) playerWalk(2);
-                playerWalk(3);
-                playerWalk(4);
-                if(isOnePlayer) playerWalk(5);
-
-                // player1
-                // Speed
-                if(chunk[player1.Y][player1.X].isBoot) { 
-                    chunk[player1.Y][player1.X].setImageView(null);
-                    chunk[player1.Y][player1.X].isBoot = false;
-                    if(player1.speed < 6) player1.speed++;
-                    controller.speed1.setText(Integer.toString(player1.speed));
-                }
-                // Blast Range
-                if(chunk[player1.Y][player1.X].isPotion) {
-                    chunk[player1.Y][player1.X].setImageView(null);
-                    chunk[player1.Y][player1.X].isPotion = false;
-                    if(player1.blastRange < 9) player1.blastRange++;
-                    controller.blastRange1.setText(Integer.toString(player1.blastRange));
-                }
-                // Bomb Number
-                if(chunk[player1.Y][player1.X].isBomb) {
-                    chunk[player1.Y][player1.X].setImageView(null);
-                    chunk[player1.Y][player1.X].isBomb = false;
-                    player1.bombNumber++;
-                    controller.bombNumber1.setText(Integer.toString(player1.bombNumber));
-                }
-                // Heart
-                if(chunk[player1.Y][player1.X].isHeart) {
-                    chunk[player1.Y][player1.X].setImageView(null);
-                    chunk[player1.Y][player1.X].isHeart = false;
-                    player1.heart++;
-                    controller.heart1.setText(Integer.toString(player1.heart));
-                }
-
-
-                // player2
-                if(isTwoPlayer) {
-                    // Speed
-                    if(chunk[player2.Y][player2.X].isBoot) { 
-                        chunk[player2.Y][player2.X].setImageView(null);
-                        chunk[player2.Y][player2.X].isBoot = false;
-                        if(player2.speed < 6) player2.speed++;
-                        controller.speed2.setText(Integer.toString(player2.speed));
-                    }
-                    // Blast Range
-                    if(chunk[player2.Y][player2.X].isPotion) {
-                        chunk[player2.Y][player2.X].setImageView(null);
-                        chunk[player2.Y][player2.X].isPotion = false;
-                        if(player2.blastRange < 9) player2.blastRange++;
-                        controller.blastRange2.setText(Integer.toString(player2.blastRange));
-                    }
-                    // Bomb Number
-                    if(chunk[player2.Y][player2.X].isBomb) {
-                        chunk[player2.Y][player2.X].setImageView(null);
-                        chunk[player2.Y][player2.X].isBomb = false;
-                        player2.bombNumber++;
-                        controller.bombNumber2.setText(Integer.toString(player2.bombNumber));
-                    }
-                    // Heart
-                    if(chunk[player2.Y][player2.X].isHeart) {
-                        // chunk[player2.Y][player2.X].setImageView(new Image("/resources/Images/sand.png"));
-                        chunk[player2.Y][player2.X].setImageView(null);
-                        chunk[player2.Y][player2.X].isHeart = false;
-                        player2.heart++;
-                        controller.heart2.setText(Integer.toString(player2.heart));
-                    }
-                }
-
-                // AI1
-                // Speed
-                if(chunk[AI1.Y][AI1.X].isBoot) { 
-                    chunk[AI1.Y][AI1.X].setImageView(null);
-                    chunk[AI1.Y][AI1.X].isBoot = false;
-                    if(AI1.speed < 6) AI1.speed++;
-                }
-                // Blast Range
-                if(chunk[AI1.Y][AI1.X].isPotion) {
-                    chunk[AI1.Y][AI1.X].setImageView(null);
-                    chunk[AI1.Y][AI1.X].isPotion = false;
-                    if(AI1.blastRange < 9) AI1.blastRange++;
-                }
-                // Bomb Number
-                if(chunk[AI1.Y][AI1.X].isBomb) {
-                    chunk[AI1.Y][AI1.X].setImageView(null);
-                    chunk[AI1.Y][AI1.X].isBomb = false;
-                    AI1.bombNumber++;
-                }
-                // Heart
-                if(chunk[AI1.Y][AI1.X].isHeart) {
-                    chunk[AI1.Y][AI1.X].setImageView(null);
-                    chunk[AI1.Y][AI1.X].isHeart = false;
-                    AI1.heart++;
-                }
-
-                // AI2
-                // Speed
-                if(chunk[AI2.Y][AI2.X].isBoot) { 
-                    chunk[AI2.Y][AI2.X].setImageView(null);
-                    chunk[AI2.Y][AI2.X].isBoot = false;
-                    if(AI2.speed < 6) AI1.speed++;
-                }
-                // Blast Range
-                if(chunk[AI2.Y][AI2.X].isPotion) {
-                    chunk[AI2.Y][AI2.X].setImageView(null);
-                    chunk[AI2.Y][AI2.X].isPotion = false;
-                    if(AI2.blastRange < 9) AI1.blastRange++;
-                }
-                // Bomb Number
-                if(chunk[AI2.Y][AI2.X].isBomb) {
-                    chunk[AI2.Y][AI2.X].setImageView(null);
-                    chunk[AI2.Y][AI2.X].isBomb = false;
-                    AI2.bombNumber++;
-                }
-                // Heart
-                if(chunk[AI2.Y][AI2.X].isHeart) {
-                    chunk[AI2.Y][AI2.X].setImageView(null);
-                    chunk[AI2.Y][AI2.X].isHeart = false;
-                    AI2.heart++;
-                }
-
-                if(isOnePlayer) {
-                    // AI3
-                    // Speed
-                    if(chunk[AI3.Y][AI3.X].isBoot) { 
-                        chunk[AI3.Y][AI3.X].setImageView(null);
-                        chunk[AI3.Y][AI3.X].isBoot = false;
-                        if(AI3.speed < 6) AI1.speed++;
-                    }
-                    // Blast Range
-                    if(chunk[AI3.Y][AI3.X].isPotion) {
-                        chunk[AI3.Y][AI3.X].setImageView(null);
-                        chunk[AI3.Y][AI3.X].isPotion = false;
-                        if(AI3.blastRange < 9) AI1.blastRange++;
-                    }
-                    // Bomb Number
-                    if(chunk[AI3.Y][AI3.X].isBomb) {
-                        chunk[AI3.Y][AI3.X].setImageView(null);
-                        chunk[AI3.Y][AI3.X].isBomb = false;
-                        AI3.bombNumber++;
-                    }
-                    // Heart
-                    if(chunk[AI3.Y][AI3.X].isHeart) {
-                    chunk[AI3.Y][AI3.X].setImageView(null);
-                    chunk[AI3.Y][AI3.X].isHeart = false;
-                    AI3.heart++;
-                }
-                }
-                
-                
-                if(isOnePlayer) {
-                    if(!player1.isInvincible)
-                        try { damage(1); } catch (IOException e) { e.printStackTrace();} 
-                }
-                if(isTwoPlayer) {
-                    if(!player1.isInvincible) try { damage(1); } catch (IOException e) { e.printStackTrace();}
-                    if(!player2.isInvincible) try { damage(2); } catch (IOException e) { e.printStackTrace();}
-                }
-            }
-        };
-
-        gameLoop.start();
-    }
-
+//////////////////////////////////////////////////////
     private void playerWalk(int num) {
 
         int dx = 0, dy = 0;
@@ -958,10 +993,150 @@ public class GameView {
                     if(time == 0) time = now;
                     if(now-time >= 2.5e9) {
                         chunk[y][x].setBlocked(false);
-                        // chunk[y][x].setImageView(new Image("/resources/Images/sand.png"));
                         chunk[y][x].setImageView(null);
                         controller.bombNumber2.setText(Integer.toString(++player2.bombNumber));
                         bombBurst(y, x, player2.blastRange);
+                        stop();
+                    }
+                }
+                
+            }.start();
+        }
+
+        if(num == 3) {
+
+            int y=AI1.Y, x=AI1.X;
+
+            if(chunk[y][x].imageView.getImage() == new Image("/resources/Images/elephantBomb.png")) return;
+            if(AI1.bombNumber <= 0) return;
+
+            chunk[y][x].setImageView(new Image(getClass().getResource("/resources/Images/elephantBomb.gif").toExternalForm()));
+            chunk[y][x].setBlocked(true);
+            chunk[y][x].isFiringBomb = true;
+            AI1.bombNumber--;
+
+            chunk[y][x].isCareFul = true;
+            for(int i=1 ; i<=AI1.blastRange ; i++) {
+                if(chunk[y-i][x].isWall) break;
+                else chunk[y-i][x].isCareFul = true;
+            }
+            for(int i=1 ; i<=AI1.blastRange ; i++) {
+                if(chunk[y+i][x].isWall) break;
+                else chunk[y+i][x].isCareFul = true;
+            }
+            for(int i=1 ; i<=AI1.blastRange ; i++) {
+                if(chunk[y][x-i].isWall) break;
+                else chunk[y][x-i].isCareFul = true;
+            }
+            for(int i=1 ; i<=AI1.blastRange ; i++) {
+                if(chunk[y][x+i].isWall) break;
+                else chunk[y][x+i].isCareFul = true;
+            }
+            new AnimationTimer() {
+                private long time = 0;
+
+                @Override
+                public void handle(long now) {
+                    if(time == 0) time = now;
+                    if(now-time >= 2.5e9) {
+                        chunk[y][x].setBlocked(false);
+                        chunk[y][x].setImageView(null);
+                        AI1.bombNumber++;
+                        bombBurst(y, x, AI1.blastRange);
+                        stop();
+                    }
+                }
+                
+            }.start();
+        }
+    
+        if(num == 4) {
+
+            int y=AI2.Y, x=AI2.X;
+
+            if(chunk[y][x].imageView.getImage() == new Image("/resources/Images/elephantBomb.png")) return;
+            if(AI2.bombNumber <= 0) return;
+
+            chunk[y][x].setImageView(new Image(getClass().getResource("/resources/Images/elephantBomb.gif").toExternalForm()));
+            chunk[y][x].setBlocked(true);
+            chunk[y][x].isFiringBomb = true;
+            AI2.bombNumber--;
+
+            chunk[y][x].isCareFul = true;
+            for(int i=1 ; i<=AI2.blastRange ; i++) {
+                if(chunk[y-i][x].isWall) break;
+                else chunk[y-i][x].isCareFul = true;
+            }
+            for(int i=1 ; i<=AI2.blastRange ; i++) {
+                if(chunk[y+i][x].isWall) break;
+                else chunk[y+i][x].isCareFul = true;
+            }
+            for(int i=1 ; i<=AI2.blastRange ; i++) {
+                if(chunk[y][x-i].isWall) break;
+                else chunk[y][x-i].isCareFul = true;
+            }
+            for(int i=1 ; i<=AI2.blastRange ; i++) {
+                if(chunk[y][x+i].isWall) break;
+                else chunk[y][x+i].isCareFul = true;
+            }
+            new AnimationTimer() {
+                private long time = 0;
+
+                @Override
+                public void handle(long now) {
+                    if(time == 0) time = now;
+                    if(now-time >= 2.5e9) {
+                        chunk[y][x].setBlocked(false);
+                        chunk[y][x].setImageView(null);
+                        AI2.bombNumber++;
+                        bombBurst(y, x, AI2.blastRange);
+                        stop();
+                    }
+                }
+                
+            }.start();
+        }
+        
+        if(num == 5) {
+
+            int y=AI3.Y, x=AI3.X;
+
+            if(chunk[y][x].imageView.getImage() == new Image("/resources/Images/elephantBomb.png")) return;
+            if(AI3.bombNumber <= 0) return;
+
+            chunk[y][x].setImageView(new Image(getClass().getResource("/resources/Images/elephantBomb.gif").toExternalForm()));
+            chunk[y][x].setBlocked(true);
+            chunk[y][x].isFiringBomb = true;
+            AI3.bombNumber--;
+
+            chunk[y][x].isCareFul = true;
+            for(int i=1 ; i<=AI3.blastRange ; i++) {
+                if(chunk[y-i][x].isWall) break;
+                else chunk[y-i][x].isCareFul = true;
+            }
+            for(int i=1 ; i<=AI3.blastRange ; i++) {
+                if(chunk[y+i][x].isWall) break;
+                else chunk[y+i][x].isCareFul = true;
+            }
+            for(int i=1 ; i<=AI3.blastRange ; i++) {
+                if(chunk[y][x-i].isWall) break;
+                else chunk[y][x-i].isCareFul = true;
+            }
+            for(int i=1 ; i<=AI3.blastRange ; i++) {
+                if(chunk[y][x+i].isWall) break;
+                else chunk[y][x+i].isCareFul = true;
+            }
+            new AnimationTimer() {
+                private long time = 0;
+
+                @Override
+                public void handle(long now) {
+                    if(time == 0) time = now;
+                    if(now-time >= 2.5e9) {
+                        chunk[y][x].setBlocked(false);
+                        chunk[y][x].setImageView(null);
+                        AI3.bombNumber++;
+                        bombBurst(y, x, AI3.blastRange);
                         stop();
                     }
                 }
@@ -1185,6 +1360,97 @@ public class GameView {
             }
             else return; 
         }
-    }
     
+        if(num == 3) {
+            if(chunk[AI1.Y][AI1.X].isDangered) {
+                if(AI1.heart > 1) {
+                    AI1.heart--;
+                    AI1.isInvincible = true;
+
+                    new AnimationTimer() {
+                        double previousTime = 0;
+
+                        @Override
+                        public void handle(long now) {
+                            if(previousTime == 0) previousTime = now; 
+                            if(now-previousTime >= 2.5e9) {
+                                AI1.isInvincible = false;
+                                stop();
+                            }
+                        }
+                    }.start();
+                }
+                else {
+                    AI1.imageView.setVisible(false);
+                    AI1.animation.stop();
+                    AI1.isDead = true;
+                    playerAlive--;
+                }
+            }
+            else return; 
+        }
+    
+        if(num == 4) {
+            if(chunk[AI2.Y][AI2.X].isDangered) {
+                if(AI2.heart > 1) {
+                    AI2.heart--;
+                    AI2.isInvincible = true;
+
+                    new AnimationTimer() {
+                        double previousTime = 0;
+
+                        @Override
+                        public void handle(long now) {
+                            if(previousTime == 0) previousTime = now; 
+                            if(now-previousTime >= 2.5e9) {
+                                AI2.isInvincible = false;
+                                stop();
+                            }
+                        }
+                    }.start();
+                }
+                else {
+                    AI2.imageView.setVisible(false);
+                    AI2.animation.stop();
+                    AI2.isDead = true;
+                    playerAlive--;
+                }
+            }
+            else return; 
+        }
+    
+        if(num == 5) {
+            if(chunk[AI3.Y][AI3.X].isDangered) {
+                if(AI3.heart > 1) {
+                    AI3.heart--;
+                    AI3.isInvincible = true;
+
+                    new AnimationTimer() {
+                        double previousTime = 0;
+
+                        @Override
+                        public void handle(long now) {
+                            if(previousTime == 0) previousTime = now; 
+                            if(now-previousTime >= 2.5e9) {
+                                AI3.isInvincible = false;
+                                stop();
+                            }
+                        }
+                    }.start();
+                }
+                else {
+                    AI3.imageView.setVisible(false);
+                    AI3.animation.stop();
+                    AI3.isDead = true;
+                    playerAlive--;
+                }
+            }
+            else return; 
+        }
+    
+    // if(isOnePlayer && playerAlive == 1) {
+
+    // }
+    }
+
 }

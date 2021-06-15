@@ -4,26 +4,30 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 public class Character extends Pane {
-    ImageView imageView;
-    int count = 3;
-    int column = 3;
-    int offsetX = 0;
-    int offsetY = 0;
-    int width = 48;
-    int height = 48;
 
-    int bombNumber = 1;     //1
-    int blastRange = 10;     //1
-    int speed = 5;          //2
-    int heart = 222;
-    boolean isInvincible = false;
+    private int count = 3;
+    private int column = 3;
+    private int offsetX = 0;
+    private int offsetY = 0;
+    private int width = 48;
+    private int height = 48;
 
     final int DISTANCE = 48;
     double deltaDistance = 0;
     char direction = 'S';
     int X=0;
     int Y=0;
-    
+
+
+    ImageView imageView;
+    int bombNumber = 1;     
+    int blastRange = 1;     
+    int speed = 4;          
+    int heart = 2;
+
+    boolean isInvincible = false;
+    boolean isDead = false;
+
     SpriteAnimation animation;
 
     public Character(ImageView imageView) {
@@ -119,5 +123,4 @@ public class Character extends Pane {
         this.X = x;
         this.Y = y;
     }
-
 }

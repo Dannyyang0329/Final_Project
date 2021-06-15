@@ -13,43 +13,17 @@ public class BeginController {
     @FXML
     ImageView blackView;
 
-
-    long previousTime = 0;
-    public AnimationTimer fadeOutTimer;
-    public AnimationTimer fadeInTimer;
-
+    // One Player
     public void onePlayer(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/Fxml/selectScreen.fxml"));
-        Parent root = loader.load();
-
-        SelectController controller = loader.getController();
-
-        this.screenFadeOut(0, 1, root);
-        controller.screenFadeIn(1, 1);
 
         GameView.isOnePlayer = true;
-    }
 
-    public void twoPlayer(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/Fxml/selectScreen.fxml"));
-        Parent root = loader.load();
+        Parent root = FXMLLoader.load(getClass().getResource("/resources/Fxml/selectScreen.fxml"));
 
-        SelectController controller = loader.getController();
-
-        this.screenFadeOut(0, 1, root);
-        controller.screenFadeIn(1, 1);
-
-        GameView.isTwoPlayer = true;
-    }
-
-    public void exit(ActionEvent e) {
-        System.exit(0);
-    } 
-
-
-    public void screenFadeOut(int delay, int duration, Parent root) {
-
-        fadeOutTimer = new AnimationTimer(){
+        // fade out
+        new AnimationTimer(){
+            double previousTime = 0;
+            int delay=0, duration=1;
 
             @Override
             public void handle(long now) {
@@ -63,35 +37,44 @@ public class BeginController {
                     previousTime = 0;
 
                     Main.stage.setScene(new Scene(root));
-                    fadeOutTimer.stop();
+                    stop();
                 }
             }
-        };
-
-        fadeOutTimer.start();
+        }.start();
     }
 
-    public void screenFadeIn(int delay, int duration) {
+    // Two Player
+    public void twoPlayer(ActionEvent e) throws IOException {
 
-        fadeInTimer = new AnimationTimer(){
+        GameView.isTwoPlayer = true;
+
+        Parent root = FXMLLoader.load(getClass().getResource("/resources/Fxml/selectScreen.fxml"));
+
+        // fade out
+        new AnimationTimer(){
+            double previousTime = 0;
+            int delay=0, duration=1;
 
             @Override
             public void handle(long now) {
-                if(previousTime == 0)  previousTime = now;       
+                if(previousTime == 0) previousTime = now;
                 else if(now-previousTime>delay*1.0e9 && now-previousTime<(delay+duration)*1.0e9) {
                     blackView.setVisible(true);
-                    blackView.setOpacity(delay+1-(now-previousTime)/1.0e9);
+                    blackView.setOpacity((now-previousTime)/1.0e9-delay);
                 }
 
                 if(now-previousTime >= (delay+duration)*1.0e9) {
                     previousTime = 0;
 
-                    blackView.setVisible(false);
-                    fadeInTimer.stop();
+                    Main.stage.setScene(new Scene(root));
+                    stop();
                 }
             }
-        };
-
-        fadeInTimer.start();
+        }.start();
     }
+
+    // exit button
+    public void exit(ActionEvent e) {
+        System.exit(0);
+    } 
 }

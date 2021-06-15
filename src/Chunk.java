@@ -8,13 +8,12 @@ public class Chunk {
     private int Y;
     
     private boolean isBlocked = false;
+    private boolean isWall = false;
     private boolean canCreateItem = false;
-
-    boolean isCareFul = false;
-    boolean isDangered = false;
-    boolean isFiringBomb = false;
-    boolean isWall = false;
-    boolean isPlayer = false;
+    private boolean isCareFul = false;
+    private boolean isDangered = false;
+    private boolean isFiringBomb = false;
+    private boolean isPlayer = false;
 
     boolean isBoot = false;
     boolean isPotion = false;
@@ -24,23 +23,23 @@ public class Chunk {
     public void createItem() {
         int random = (int)(Math.random()*100)+1;
 
-        if(random <= 50) {              // 50% nothing
+        if(random <= 65) {              // 65% nothing
             setImageView(null); 
             return;        
         }
-        else if(random <= 68) {         // 18% speed up
+        else if(random <= 75) {         // 10% speed up
             setImageView(new Image("/resources/Images/boot.png")); 
             isBoot = true;
         }
-        else if(random <= 83) {         // 15% blast range increase
+        else if(random <= 85) {         // 10% blast range increase
             setImageView(new Image("/resources/Images/potion.png")); 
             isPotion = true;
         }
-        else if(random <= 95) {         // 12% bomb number increase
+        else if(random <= 93) {         // 8% bomb number increase
             setImageView(new Image("/resources/Images/bomb.png")); 
             isBomb = true;
         }
-        else if(random <= 100) {        // 5% heart up
+        else if(random <= 100) {        // 7% heart up
             setImageView(new Image("/resources/Images/heart.png")); 
             isHeart = true;
         }
@@ -75,6 +74,13 @@ public class Chunk {
         return isBlocked;
     }
 
+    public void setWall(boolean b) {
+        isWall = b;
+    }
+    public boolean getWall() {
+        return isWall;
+    }
+
     public void setCreatedItem(boolean b) {
         canCreateItem = b;
     }
@@ -82,8 +88,34 @@ public class Chunk {
         return canCreateItem;
     }
 
+    public void setCareFul(boolean b) {
+        isCareFul = b;
+    }
+    public boolean getCareFul() {
+        return isCareFul;
+    }
 
+    public void setDangered(boolean b) {
+        isDangered = b;
+    }
+    public boolean getDangered() {
+        return isDangered;
+    }
 
+    public void setFiringBomb(boolean b) {
+        isFiringBomb = b;
+    }
+    public boolean getFiringBomb() {
+        return isFiringBomb;
+    }
+    
+    public void setPlayer(boolean b) {
+        isPlayer = b;
+    }
+    public boolean getPlayer() {
+        return isPlayer;
+    }
+    
     public void clearItem() {
         isBoot = false; 
         isBomb = false;
