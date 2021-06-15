@@ -7,6 +7,8 @@ The game's name is **BombKing**. This is a interesting and exciting game. Hope y
 
 ## Class Diagram
 
+<center><img src="/src/resources/Images/BombKingClassDiagram1.png" width="25%" height="25%" />Class Diagram 1</center>
+
 ![Class Diagram 1](/src/resources/Images/BombKingClassDiagram1.png){:height="200px" width="150px"}
 ![Class Diagram 1](/src/resources/Images/BombKingClassDiagram2.png){:height="200px" width="150px"}
 
