@@ -1,14 +1,16 @@
-## Getting Started
+## Introduction
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+This is the project on my freshman year of university.
 
-## Folder Structure
+The game's name is **BombKing**. This is a interesting and exciting game. Hope you have a nice play !!!
+  
+## Class Diagram
 
-The workspace contains two folders by default, where:
+![Class Diagram 1](/BombKingClassDiagram1.png){:height="200px" width="150px"}
+![Class Diagram 1](/BombKingClassDiagram2.png){:height="200px" width="150px"}
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+## Link
 
-## Dependency Management
+This is the link of the [**BombKing**](https://drive.google.com/file/d/1skY7E5xNNb8dkAclgH6mWEqyuS4XTzZm/view?usp=sharing).  (This is not available for MAC)
 
-The `JAVA DEPENDENCIES` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-pack/blob/master/release-notes/v0.9.0.md#work-with-jar-files-directly).
+<span style="color:black">PS. The password is 31415926</span>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: Black;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GameController">
+   <children>
+      <Button focusTraversable="false" layoutX="24.0" layoutY="24.0" mnemonicParsing="false" onAction="#back" prefHeight="65.0" prefWidth="65.0" style="-fx-background-image: url(&quot;/resources/Images/backButtonImage.png&quot;);" />
+      <ImageView fx:id="mapImageView" fitHeight="720.0" fitWidth="816.0" layoutX="300.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Images/map1.png" />
+         </image>
+      </ImageView>
+      <Rectangle arcHeight="40.0" arcWidth="40.0" fill="#85b8cb" focusTraversable="true" height="260.0" layoutX="24.0" layoutY="140.0" stroke="BLACK" strokeType="INSIDE" width="252.0" />
+      <Label layoutX="36.0" layoutY="230.0" prefHeight="30.0" prefWidth="175.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="        Bomb Number :" textFill="#d1dddb">
+         <font>
+            <Font name="Rockwell" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="bombNumber1" alignment="CENTER" layoutX="221.0" layoutY="230.0" prefHeight="30.0" prefWidth="40.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="1" textFill="#d1dddb">
+         <font>
+            <Font name="Rockwell" size="18.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="41.0" layoutY="233.0" pickOnBounds="true">
+         <image>
+            <Image url="@../Images/bomb.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="39.0" layoutY="270.0" prefHeight="30.0" prefWidth="175.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="        Blast Range : " textFill="#d1dddb">
+         <font>
+            <Font name="Rockwell" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="39.0" layoutY="310.0" prefHeight="30.0" prefWidth="175.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="        Running Speed :" textFill="#d1dddb">
+         <font>
+            <Font name="Rockwell" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="39.0" layoutY="350.0" prefHeight="30.0" prefWidth="175.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="        Player Life :" textFill="#d1dddb">
+         <font>
+            <Font name="Rockwell" size="18.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="41.0" layoutY="273.0" pickOnBounds="true">
+         <image>
+            <Image url="@../Images/potion.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="41.0" layoutY="313.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Images/boot.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="41.0" layoutY="353.0" pickOnBounds="true">
+         <image>
+            <Image url="@../Images/heart.png" />
+         </image>
+      </ImageView>
+      <Label alignment="CENTER" layoutX="106.0" layoutY="170.0" prefHeight="30.0" prefWidth="145.0" style="-fx-background-color: #90ee90; -fx-background-radius: 8;" text="Player 1">
+         <font>
+            <Font name="Rockwell" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="blastRange1" alignment="CENTER" layoutX="221.0" layoutY="270.0" prefHeight="30.0" prefWidth="40.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="1" textFill="#d1dddb">
+         <font>
+            <Font name="Rockwell" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="speed1" alignment="CENTER" layoutX="221.0" layoutY="311.0" prefHeight="30.0" prefWidth="40.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="2" textFill="#d1dddb">
+         <font>
+            <Font name="Rockwell" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="heart1" alignment="CENTER" layoutX="221.0" layoutY="351.0" prefHeight="30.0" prefWidth="40.0" style="-fx-background-color: #1d6a96; -fx-background-radius: 8;" text="2" textFill="#d1dddb">
+         <font>
+            <Font name="Rockwell" size="18.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="playerImage1" fitHeight="60.0" fitWidth="60.0" layoutX="41.0" layoutY="155.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Images/character1.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="blackView" fitHeight="800.0" fitWidth="1200.0" opacity="0.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../Images/blackImage.jpg" />
+         </image>
+      </ImageView>
+      <AnchorPane fx:id="gameOver1" layoutX="150.0" layoutY="100.0" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: Gray; -fx-border-color: DarkSlateGrey; -fx-border-width: 10;" visible="false">
+         <children>
+            <Button layoutX="238.0" layoutY="327.0" mnemonicParsing="false" onAction="#restart1" prefHeight="90.0" prefWidth="425.0" style="-fx-background-color: aqua; -fx-background-radius: 20;" text="Restart">
+               <font>
+                  <Font name="Rockwell" size="36.0" />
+               </font>
+            </Button>
+            <Button layoutX="238.0" layoutY="447.0" mnemonicParsing="false" onAction="#menu" prefHeight="90.0" prefWidth="425.0" style="-fx-background-color: aqua; -fx-background-radius: 20;" text="Back To Menu">
+               <font>
+                  <Font name="Rockwell" size="36.0" />
+               </font>
+            </Button>
+            <Label fx:id="label" alignment="CENTER" layoutX="132.0" layoutY="90.0" prefHeight="190.0" prefWidth="628.0" style="-fx-background-color: BurlyWood; -fx-background-radius: 30;" text="Player1 Lose !!!" textFill="RED">
+               <font>
+                  <Font name="Rockwell" size="84.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
