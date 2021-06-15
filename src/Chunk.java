@@ -23,23 +23,23 @@ public class Chunk {
     public void createItem() {
         int random = (int)(Math.random()*100)+1;
 
-        if(random <= 65) {              // 65% nothing
+        if(random <= 50) {              // 50% nothing
             setImageView(null); 
             return;        
         }
-        else if(random <= 75) {         // 10% speed up
+        else if(random <= 60) {         // 10% speed up
             setImageView(new Image("/resources/Images/boot.png")); 
             isBoot = true;
         }
-        else if(random <= 85) {         // 10% blast range increase
+        else if(random <= 70) {         // 10% blast range increase
             setImageView(new Image("/resources/Images/potion.png")); 
             isPotion = true;
         }
-        else if(random <= 93) {         // 8% bomb number increase
+        else if(random <= 85) {         // 15% bomb number increase
             setImageView(new Image("/resources/Images/bomb.png")); 
             isBomb = true;
         }
-        else if(random <= 100) {        // 7% heart up
+        else if(random <= 100) {        // 15% heart up
             setImageView(new Image("/resources/Images/heart.png")); 
             isHeart = true;
         }
