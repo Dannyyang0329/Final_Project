@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.Stack;
 import javafx.scene.image.ImageView;
 
@@ -31,7 +30,7 @@ public class AIPlayer extends Character{
             for(int j=0 ; j<17 ; j++) {
 
                 aiMap[i][j] = 0;
-                if(chunk[i][j].getWall() && chunk[i][j].getBlocked() aiMap[i][j] = 1;
+                if(chunk[i][j].getWall() && chunk[i][j].getBlocked()) aiMap[i][j] = 1;
                 if(chunk[i][j].getCreatedItem() && chunk[i][j].getBlocked()) aiMap[i][j] = 2;
                 if(chunk[i][j].getCareFul()) aiMap[i][j] = 3;
                 if(chunk[i][j].getDangered()) aiMap[i][j] = 4;
@@ -189,20 +188,18 @@ public class AIPlayer extends Character{
     }
 
     private void clearBrain() {
-        Arrays.fill(brain, 0);
-        // for(int i=0 ; i<15 ; i++) {
-        //     for(int j=0 ; j<17 ; j++) {
-        //         brain[i][j] = 0;
-        //     }
-        // }
+        for(int i=0 ; i<15 ; i++) {
+            for(int j=0 ; j<17 ; j++) {
+                brain[i][j] = 0;
+            }
+        }
     }
 
     private void clearScanBrain() {
-        Arrays.fill(scanBrain, 0);
-        // for(int i=0 ; i<15 ; i++) {
-        //     for(int j=0 ; j<17 ; j++) {
-        //         scanBrain[i][j] = 0;
-        //     }
-        // }
+        for(int i=0 ; i<15 ; i++) {
+            for(int j=0 ; j<17 ; j++) {
+                scanBrain[i][j] = 0;
+            }
+        }
     }
 }

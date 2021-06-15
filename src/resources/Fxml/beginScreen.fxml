@@ -39,14 +39,14 @@
             <Font name="Rockwell Condensed" size="22.0" />
          </font>
       </Label>
-      <ImageView fx:id="blackView" fitHeight="800.0" fitWidth="1200.0" opacity="0.0" pickOnBounds="true" preserveRatio="true" visible="false">
-         <image>
-            <Image url="@../Images/blackImage.jpg" />
-         </image>
-      </ImageView>
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="1000.0" layoutY="650.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Images/cutePotato.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="blackView" fitHeight="800.0" fitWidth="1200.0" opacity="0.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../Images/blackImage.jpg" />
          </image>
       </ImageView>
    </children>

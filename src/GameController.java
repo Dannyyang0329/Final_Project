@@ -41,7 +41,7 @@ public class GameController implements Initializable {
 
         new AnimationTimer(){
             double previousTime = 0;
-            int delay=0, duration=1;
+            double delay=0.2, duration=1;
 
             @Override
             public void handle(long now) {

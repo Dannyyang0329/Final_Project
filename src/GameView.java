@@ -531,24 +531,28 @@ public class GameView {
 
         if(num == 1) {
             if(dir == 'N') {
+                if(chunk[player1.Y-1][player1.X].getBlocked()) return;
                 playerIsPress1 = true;
                 north1 = true;
 
                 stepPause(1);
             }
             else if(dir == 'S') {
+                if(chunk[player1.Y+1][player1.X].getBlocked()) return;
                 playerIsPress1 = true;
                 south1 = true;
 
                 stepPause(1);
             }
             else if(dir == 'E') {
+                if(chunk[player1.Y][player1.X+1].getBlocked()) return;
                 playerIsPress1 = true;
                 east1 = true;
 
                 stepPause(1);
             }
             else if(dir == 'W') {
+                if(chunk[player1.Y][player1.X-1].getBlocked()) return;
                 playerIsPress1 = true;
                 west1 = true;
 
@@ -558,24 +562,28 @@ public class GameView {
 
         else if(num == 2) {
             if(dir == 'N') {
+                if(chunk[player2.Y-1][player2.X].getBlocked()) return;
                 playerIsPress2 = true;
                 north2 = true;
 
                 stepPause(2);
             }
             else if(dir == 'S') {
+                if(chunk[player2.Y+1][player2.X].getBlocked()) return;
                 playerIsPress2 = true;
                 south2 = true;
 
                 stepPause(2);
             }
             else if(dir == 'E') {
+                if(chunk[player2.Y][player2.X+1].getBlocked()) return;
                 playerIsPress2 = true;
                 east2 = true;
 
                 stepPause(2);
             }
             else if(dir == 'W') {
+                if(chunk[player2.Y][player2.X-1].getBlocked()) return;
                 playerIsPress2 = true;
                 west2 = true;
 
@@ -826,7 +834,7 @@ public class GameView {
             }.start();
         }
     }
-//////////////////////////////////////////////////////
+
     private void playerWalk(int num) {
 
         int dx = 0, dy = 0;
@@ -846,7 +854,7 @@ public class GameView {
             }
         }
 
-        if(num == 2) {
+        else if(num == 2) {
 
             // determine player is walking or not
             if (north2) dy -= 1;
@@ -861,7 +869,7 @@ public class GameView {
             }
         }
 
-        if(num == 3) {
+        else if(num == 3) {
 
             // determine player is walking or not
             if (north3) dy -= 1;
@@ -876,7 +884,7 @@ public class GameView {
             }
         }
         
-        if(num == 4) {
+        else if(num == 4) {
 
             // determine player is walking or not
             if (north4) dy -= 1;
@@ -891,7 +899,7 @@ public class GameView {
             }
         }
 
-        if(num == 5) {
+        else if(num == 5) {
 
             // determine player is walking or not
             if (north5) dy -= 1;
@@ -916,25 +924,26 @@ public class GameView {
 
             chunk[y][x].setImageView(new Image(getClass().getResource("/resources/Images/elephantBomb.gif").toExternalForm()));
             chunk[y][x].setBlocked(true);
-            chunk[y][x].isFiringBomb = true;
+            chunk[y][x].setCareFul(true);
+            chunk[y][x].setFiringBomb(true);
             controller.bombNumber1.setText(Integer.toString(--player1.bombNumber));
 
-            chunk[y][x].isCareFul = true;
+            // marking careful area
             for(int i=1 ; i<=player1.blastRange ; i++) {
-                if(chunk[y-i][x].isWall) break;
-                else chunk[y-i][x].isCareFul = true;
+                if(chunk[y-i][x].getWall()) break;
+                else chunk[y-i][x].setCareFul(true);
             }
             for(int i=1 ; i<=player1.blastRange ; i++) {
-                if(chunk[y+i][x].isWall) break;
-                else chunk[y+i][x].isCareFul = true;
+                if(chunk[y+i][x].getWall()) break;
+                else chunk[y+i][x].setCareFul(true);
             }
             for(int i=1 ; i<=player1.blastRange ; i++) {
-                if(chunk[y][x-i].isWall) break;
-                else chunk[y][x-i].isCareFul = true;
+                if(chunk[y][x-i].getWall()) break;
+                else chunk[y][x-i].setCareFul(true);
             }
             for(int i=1 ; i<=player1.blastRange ; i++) {
-                if(chunk[y][x+i].isWall) break;
-                else chunk[y][x+i].isCareFul = true;
+                if(chunk[y][x+i].getWall()) break;
+                else chunk[y][x+i].setCareFul(true);
             }
 
             new AnimationTimer() {
@@ -945,9 +954,9 @@ public class GameView {
                     if(time == 0) time = now;
                     if(now-time >= 2.5e9) {
                         chunk[y][x].setBlocked(false);
-                        chunk[y][x].setImageView(null);
+                        chunk[y][x].setCareFul(false);
+                        chunk[y][x].setFiringBomb(false);
                         controller.bombNumber1.setText(Integer.toString(++player1.bombNumber));
-
                         bombBurst(y, x, player1.blastRange);
                         stop();
                     }
@@ -956,35 +965,35 @@ public class GameView {
             }.start();
         }
 
-        if(num == 2) {
-
+        else if(num == 2) {
             int y=player2.Y, x=player2.X;
 
-            if(chunk[y][x].imageView.getImage() == new Image("/resources/Images/elephantBomb.png")) return;
             if(player2.bombNumber <= 0) return;
 
             chunk[y][x].setImageView(new Image(getClass().getResource("/resources/Images/elephantBomb.gif").toExternalForm()));
             chunk[y][x].setBlocked(true);
-            chunk[y][x].isFiringBomb = true;
+            chunk[y][x].setCareFul(true);
+            chunk[y][x].setFiringBomb(true);
             controller.bombNumber2.setText(Integer.toString(--player2.bombNumber));
 
-            chunk[y][x].isCareFul = true;
+            // marking careful area
             for(int i=1 ; i<=player2.blastRange ; i++) {
-                if(chunk[y-i][x].isWall) break;
-                else chunk[y-i][x].isCareFul = true;
+                if(chunk[y-i][x].getWall()) break;
+                else chunk[y-i][x].setCareFul(true);
             }
             for(int i=1 ; i<=player2.blastRange ; i++) {
-                if(chunk[y+i][x].isWall) break;
-                else chunk[y+i][x].isCareFul = true;
+                if(chunk[y+i][x].getWall()) break;
+                else chunk[y+i][x].setCareFul(true);
             }
             for(int i=1 ; i<=player2.blastRange ; i++) {
-                if(chunk[y][x-i].isWall) break;
-                else chunk[y][x-i].isCareFul = true;
+                if(chunk[y][x-i].getWall()) break;
+                else chunk[y][x-i].setCareFul(true);
             }
             for(int i=1 ; i<=player2.blastRange ; i++) {
-                if(chunk[y][x+i].isWall) break;
-                else chunk[y][x+i].isCareFul = true;
+                if(chunk[y][x+i].getWall()) break;
+                else chunk[y][x+i].setCareFul(true);
             }
+
             new AnimationTimer() {
                 private long time = 0;
 
@@ -993,45 +1002,45 @@ public class GameView {
                     if(time == 0) time = now;
                     if(now-time >= 2.5e9) {
                         chunk[y][x].setBlocked(false);
-                        chunk[y][x].setImageView(null);
+                        chunk[y][x].setCareFul(false);
+                        chunk[y][x].setFiringBomb(false);
                         controller.bombNumber2.setText(Integer.toString(++player2.bombNumber));
                         bombBurst(y, x, player2.blastRange);
                         stop();
                     }
                 }
-                
             }.start();
         }
 
-        if(num == 3) {
-
+        else if(num == 3) {
             int y=AI1.Y, x=AI1.X;
 
-            if(chunk[y][x].imageView.getImage() == new Image("/resources/Images/elephantBomb.png")) return;
             if(AI1.bombNumber <= 0) return;
 
             chunk[y][x].setImageView(new Image(getClass().getResource("/resources/Images/elephantBomb.gif").toExternalForm()));
             chunk[y][x].setBlocked(true);
-            chunk[y][x].isFiringBomb = true;
+            chunk[y][x].setCareFul(true);
+            chunk[y][x].setFiringBomb(true);
             AI1.bombNumber--;
 
-            chunk[y][x].isCareFul = true;
+            // marking careful area
             for(int i=1 ; i<=AI1.blastRange ; i++) {
-                if(chunk[y-i][x].isWall) break;
-                else chunk[y-i][x].isCareFul = true;
+                if(chunk[y-i][x].getWall()) break;
+                else chunk[y-i][x].setCareFul(true);
             }
             for(int i=1 ; i<=AI1.blastRange ; i++) {
-                if(chunk[y+i][x].isWall) break;
-                else chunk[y+i][x].isCareFul = true;
+                if(chunk[y+i][x].getWall()) break;
+                else chunk[y+i][x].setCareFul(true);
             }
             for(int i=1 ; i<=AI1.blastRange ; i++) {
-                if(chunk[y][x-i].isWall) break;
-                else chunk[y][x-i].isCareFul = true;
+                if(chunk[y][x-i].getWall()) break;
+                else chunk[y][x-i].setCareFul(true);
             }
             for(int i=1 ; i<=AI1.blastRange ; i++) {
-                if(chunk[y][x+i].isWall) break;
-                else chunk[y][x+i].isCareFul = true;
+                if(chunk[y][x+i].getWall()) break;
+                else chunk[y][x+i].setCareFul(true);
             }
+
             new AnimationTimer() {
                 private long time = 0;
 
@@ -1040,45 +1049,46 @@ public class GameView {
                     if(time == 0) time = now;
                     if(now-time >= 2.5e9) {
                         chunk[y][x].setBlocked(false);
-                        chunk[y][x].setImageView(null);
+                        chunk[y][x].setCareFul(false);
+                        chunk[y][x].setFiringBomb(false);
                         AI1.bombNumber++;
                         bombBurst(y, x, AI1.blastRange);
                         stop();
                     }
                 }
-                
             }.start();
         }
     
-        if(num == 4) {
+        else if(num == 4) {
 
             int y=AI2.Y, x=AI2.X;
 
-            if(chunk[y][x].imageView.getImage() == new Image("/resources/Images/elephantBomb.png")) return;
             if(AI2.bombNumber <= 0) return;
 
             chunk[y][x].setImageView(new Image(getClass().getResource("/resources/Images/elephantBomb.gif").toExternalForm()));
             chunk[y][x].setBlocked(true);
-            chunk[y][x].isFiringBomb = true;
+            chunk[y][x].setCareFul(true);
+            chunk[y][x].setFiringBomb(true);
             AI2.bombNumber--;
 
-            chunk[y][x].isCareFul = true;
+            // marking careful area
             for(int i=1 ; i<=AI2.blastRange ; i++) {
-                if(chunk[y-i][x].isWall) break;
-                else chunk[y-i][x].isCareFul = true;
+                if(chunk[y-i][x].getWall()) break;
+                else chunk[y-i][x].setCareFul(true);
             }
             for(int i=1 ; i<=AI2.blastRange ; i++) {
-                if(chunk[y+i][x].isWall) break;
-                else chunk[y+i][x].isCareFul = true;
+                if(chunk[y+i][x].getWall()) break;
+                else chunk[y+i][x].setCareFul(true);
             }
             for(int i=1 ; i<=AI2.blastRange ; i++) {
-                if(chunk[y][x-i].isWall) break;
-                else chunk[y][x-i].isCareFul = true;
+                if(chunk[y][x-i].getWall()) break;
+                else chunk[y][x-i].setCareFul(true);
             }
             for(int i=1 ; i<=AI2.blastRange ; i++) {
-                if(chunk[y][x+i].isWall) break;
-                else chunk[y][x+i].isCareFul = true;
+                if(chunk[y][x+i].getWall()) break;
+                else chunk[y][x+i].setCareFul(true);
             }
+
             new AnimationTimer() {
                 private long time = 0;
 
@@ -1087,44 +1097,44 @@ public class GameView {
                     if(time == 0) time = now;
                     if(now-time >= 2.5e9) {
                         chunk[y][x].setBlocked(false);
-                        chunk[y][x].setImageView(null);
+                        chunk[y][x].setCareFul(false);
+                        chunk[y][x].setFiringBomb(false);
                         AI2.bombNumber++;
                         bombBurst(y, x, AI2.blastRange);
                         stop();
                     }
                 }
-                
             }.start();
         }
         
-        if(num == 5) {
+        else if(num == 5) {
 
             int y=AI3.Y, x=AI3.X;
 
-            if(chunk[y][x].imageView.getImage() == new Image("/resources/Images/elephantBomb.png")) return;
             if(AI3.bombNumber <= 0) return;
 
             chunk[y][x].setImageView(new Image(getClass().getResource("/resources/Images/elephantBomb.gif").toExternalForm()));
             chunk[y][x].setBlocked(true);
-            chunk[y][x].isFiringBomb = true;
+            chunk[y][x].setCareFul(true);
+            chunk[y][x].setFiringBomb(true);
             AI3.bombNumber--;
 
-            chunk[y][x].isCareFul = true;
+            // marking careful area
             for(int i=1 ; i<=AI3.blastRange ; i++) {
-                if(chunk[y-i][x].isWall) break;
-                else chunk[y-i][x].isCareFul = true;
+                if(chunk[y-i][x].getWall()) break;
+                else chunk[y-i][x].setCareFul(true);
             }
             for(int i=1 ; i<=AI3.blastRange ; i++) {
-                if(chunk[y+i][x].isWall) break;
-                else chunk[y+i][x].isCareFul = true;
+                if(chunk[y+i][x].getWall()) break;
+                else chunk[y+i][x].setCareFul(true);
             }
             for(int i=1 ; i<=AI3.blastRange ; i++) {
-                if(chunk[y][x-i].isWall) break;
-                else chunk[y][x-i].isCareFul = true;
+                if(chunk[y][x-i].getWall()) break;
+                else chunk[y][x-i].setCareFul(true);
             }
             for(int i=1 ; i<=AI3.blastRange ; i++) {
-                if(chunk[y][x+i].isWall) break;
-                else chunk[y][x+i].isCareFul = true;
+                if(chunk[y][x+i].getWall()) break;
+                else chunk[y][x+i].setCareFul(true);
             }
             new AnimationTimer() {
                 private long time = 0;
@@ -1134,13 +1144,13 @@ public class GameView {
                     if(time == 0) time = now;
                     if(now-time >= 2.5e9) {
                         chunk[y][x].setBlocked(false);
-                        chunk[y][x].setImageView(null);
+                        chunk[y][x].setCareFul(false);
+                        chunk[y][x].setFiringBomb(false);
                         AI3.bombNumber++;
                         bombBurst(y, x, AI3.blastRange);
                         stop();
                     }
                 }
-                
             }.start();
         }
     }
@@ -1148,10 +1158,10 @@ public class GameView {
     private void bombBurst(int y, int x, int range) {
 
         new AnimationTimer() {
-            int r=1;
+
             boolean canUp=true, canDown=true, canLeft=true, canRight=true;
 
-            long previousTime = 0;
+            double previousTime = 0;
             double duration = 0.5e9;
 
             @Override
@@ -1159,50 +1169,55 @@ public class GameView {
                 if(previousTime == 0) {
                     previousTime = now;
                     chunk[y][x].setImageView(new Image("/resources/Images/fire.jpg"));
-                    chunk[y][x].isDangered = true;
-                }
+                    chunk[y][x].setDangered(true);
 
-                // Blast
-                if(now-previousTime < r*(duration/range)) {
+                    // Blast
+                    for(int i=1 ; i<=range ; i++) {
+                        // UP
+                        if(canUp) {
+                            if(chunk[y-i][x].getWall()) canUp = false;
+                            else if(!chunk[y-i][x].getBlocked() || chunk[y-i][x].getCreatedItem() || chunk[y-i][x].getFiringBomb()) {
+                                chunk[y-i][x].clearItem();
+                                chunk[y-i][x].setImageView(new Image("/resources/Images/fire.jpg"));
+                                chunk[y-i][x].setDangered(true);
+                            }
+                        }
 
-                    // UP
-                    for(int i=1 ; canUp && i<=r ; i++) {
-                        if(chunk[y-i][x].isWall) canUp = false;
-                        else if(!chunk[y-i][x].getBlocked() || chunk[y-i][x].getCreatedItem() || chunk[y-i][x].isFiringBomb) {
-                            chunk[y-i][x].clearItem();
-                            chunk[y-i][x].setImageView(new Image("/resources/Images/fire.jpg"));
-                            chunk[y-i][x].isDangered = true;
+                        // DOWN
+                        if(canDown) {
+                            if(chunk[y+i][x].getWall()) canDown = false;
+                            else if(!chunk[y+i][x].getBlocked() || chunk[y+i][x].getCreatedItem() || chunk[y+i][x].getFiringBomb()) {
+                                chunk[y+i][x].clearItem();
+                                chunk[y+i][x].setImageView(new Image("/resources/Images/fire.jpg"));
+                                chunk[y+i][x].setDangered(true);
+                            }
                         }
-                    }
-                    // DOWN
-                    for(int i=1 ; canDown && i<=r ; i++) {
-                        if(chunk[y+i][x].isWall) canDown = false;
-                        else if(!chunk[y+i][x].getBlocked() || chunk[y+i][x].getCreatedItem() || chunk[y+i][x].isFiringBomb) {
-                            chunk[y+i][x].clearItem();
-                            chunk[y+i][x].setImageView(new Image("/resources/Images/fire.jpg"));
-                            chunk[y+i][x].isDangered = true;
+
+                        // LEFT
+                        if(canLeft) {
+                            if(chunk[y][x-i].getWall()) canLeft = false;
+                            else if(!chunk[y][x-i].getBlocked() || chunk[y][x-i].getCreatedItem() || chunk[y][x-i].getFiringBomb()) {
+                                chunk[y][x-i].clearItem();
+                                chunk[y][x-i].setImageView(new Image("/resources/Images/fire.jpg"));
+                                chunk[y][x-i].setDangered(true);
+                            }
                         }
-                    }
-                    // LEFT
-                    for(int i=1 ; canLeft && i<=r ; i++) {
-                        if(chunk[y][x-i].isWall) canLeft = false;
-                        else if(!chunk[y][x-i].getBlocked() || chunk[y][x-i].getCreatedItem() || chunk[y][x-i].isFiringBomb) {
-                            chunk[y][x-i].clearItem();
-                            chunk[y][x-i].setImageView(new Image("/resources/Images/fire.jpg"));
-                            chunk[y][x-i].isDangered = true;
-                        }
-                    }
-                    // RIGHT
-                    for(int i=1 ; canRight && i<=r ; i++) {
-                        if(chunk[y][x+i].isWall) canRight = false;
-                        else if(!chunk[y][x+i].getBlocked() || chunk[y][x+i].getCreatedItem() || chunk[y][x+i].isFiringBomb) {
-                            chunk[y][x+i].clearItem();
-                            chunk[y][x+i].setImageView(new Image("/resources/Images/fire.jpg"));
-                            chunk[y][x+i].isDangered = true;
+
+                        // RIGHT
+                        if(canRight) {
+                            if(chunk[y][x+i].getWall()) canRight = false;
+                            else if(!chunk[y][x+i].getBlocked() || chunk[y][x+i].getCreatedItem() || chunk[y][x+i].getFiringBomb()) {
+                                chunk[y][x+i].clearItem();
+                                chunk[y][x+i].setImageView(new Image("/resources/Images/fire.jpg"));
+                                chunk[y][x+i].setDangered(true);
+                            }
                         }
                     }
 
-                    if(r < range) r++;
+                    canUp = true;
+                    canDown = true;
+                    canLeft = true;
+                    canRight = true;
                 }
 
                 // Show item
@@ -1210,56 +1225,68 @@ public class GameView {
 
                     // CENTER
                     chunk[y][x].setImageView(null);
-                    chunk[y][x].isCareFul = false;
-                    chunk[y][x].isDangered = false;
-                    chunk[y][x].isFiringBomb = false;
+                    chunk[y][x].setDangered(false);
 
-                    // UP
-                    for(int i=1 ; i<=range && !chunk[y-i][x].isWall; i++) {
-                        chunk[y-i][x].isCareFul = false;
-                        chunk[y-i][x].isDangered = false;
-                        if(!chunk[y-i][x].getBlocked()) chunk[y-i][x].setImageView(null);
-                        if(chunk[y-i][x].isFiringBomb) chunk[y-i][x].setImageView(new Image(getClass().getResource("/resources/Images/elephantBomb.gif").toExternalForm()));
-                        if(chunk[y-i][x].getCreatedItem()) {
-                            chunk[y-i][x].setBlocked(false);
-                            chunk[y-i][x].setCreatedItem(false);
-                            chunk[y-i][x].createItem();
+                    for(int i=1 ; i<=range ; i++) {
+
+                        // UP
+                        if(canUp) {
+                            if(chunk[y-i][x].getWall()) canUp = false;
+                            else {
+                                chunk[y-i][x].setDangered(false);
+                                if(!chunk[y-i][x].getBlocked()) chunk[y-i][x].setImageView(null);
+                                if(chunk[y-i][x].getFiringBomb()) chunk[y-i][x].setImageView(new Image(getClass().getResource("/resources/Images/elephantBomb.gif").toExternalForm()));
+                                if(chunk[y-i][x].getCreatedItem()) {
+                                    chunk[y-i][x].setBlocked(false);
+                                    chunk[y-i][x].setCreatedItem(false);
+                                    chunk[y-i][x].createItem();
+                                }
+                            }
                         }
-                    }
-                    // DOWN
-                    for(int i=1 ; i<=range && !chunk[y+i][x].isWall; i++) {
-                        chunk[y+i][x].isCareFul = false;
-                        chunk[y+i][x].isDangered = false;
-                        if(!chunk[y+i][x].getBlocked()) chunk[y+i][x].setImageView(null);
-                        if(chunk[y+i][x].isFiringBomb) chunk[y+i][x].setImageView(new Image(getClass().getResource("/resources/Images/elephantBomb.gif").toExternalForm()));
-                        if(chunk[y+i][x].getCreatedItem()) {
-                            chunk[y+i][x].setBlocked(false);
-                            chunk[y+i][x].setCreatedItem(false);
-                            chunk[y+i][x].createItem();
+
+                        // DOWN
+                        if(canDown) {
+                            if(chunk[y+i][x].getWall()) canDown = false;
+                            else {
+                                chunk[y+i][x].setDangered(false);
+                                if(!chunk[y+i][x].getBlocked()) chunk[y+i][x].setImageView(null);
+                                if(chunk[y+i][x].getFiringBomb()) chunk[y+i][x].setImageView(new Image(getClass().getResource("/resources/Images/elephantBomb.gif").toExternalForm()));
+                                if(chunk[y+i][x].getCreatedItem()) {
+                                    chunk[y+i][x].setBlocked(false);
+                                    chunk[y+i][x].setCreatedItem(false);
+                                    chunk[y+i][x].createItem();
+                                }
+                            }
                         }
-                    }
-                    // LEFT
-                    for(int i=1 ; i<=range && !chunk[y][x-i].isWall ; i++) {
-                        chunk[y][x-i].isCareFul = false;
-                        chunk[y][x-i].isDangered = false;
-                        if(!chunk[y][x-i].getBlocked()) chunk[y][x-i].setImageView(null);
-                        if(chunk[y][x-i].isFiringBomb) chunk[y][x-i].setImageView(new Image(getClass().getResource("/resources/Images/elephantBomb.gif").toExternalForm()));
-                        if(chunk[y][x-i].getCreatedItem()) {
-                            chunk[y][x-i].setBlocked(false);
-                            chunk[y][x-i].setCreatedItem(false);
-                            chunk[y][x-i].createItem();
+
+                        // LEFT
+                        if(canLeft) {
+                            if(chunk[y][x-i].getWall()) canLeft = false;
+                            else {
+                                chunk[y][x-i].setDangered(false);
+                                if(!chunk[y][x-i].getBlocked()) chunk[y][x-i].setImageView(null);
+                                if(chunk[y][x-i].getFiringBomb()) chunk[y][x-i].setImageView(new Image(getClass().getResource("/resources/Images/elephantBomb.gif").toExternalForm()));
+                                if(chunk[y][x-i].getCreatedItem()) {
+                                    chunk[y][x-i].setBlocked(false);
+                                    chunk[y][x-i].setCreatedItem(false);
+                                    chunk[y][x-i].createItem();
+                                }
+                            }
                         }
-                    }
-                    // RIGHT
-                    for(int i=1 ; i<=range && !chunk[y][x+i].isWall ; i++) {
-                        chunk[y][x+i].isCareFul = false;
-                        chunk[y][x+i].isDangered = false;
-                        if(!chunk[y][x+i].getBlocked()) chunk[y][x+i].setImageView(null);
-                        if(chunk[y][x+i].isFiringBomb) chunk[y][x+i].setImageView(new Image(getClass().getResource("/resources/Images/elephantBomb.gif").toExternalForm()));
-                        if(chunk[y][x+i].getCreatedItem()) {
-                            chunk[y][x+i].setBlocked(false);
-                            chunk[y][x+i].setCreatedItem(false);
-                            chunk[y][x+i].createItem();
+
+                        // RIGHT
+                        if(canRight) {
+                            if(chunk[y][x+i].getWall()) canRight = false;
+                            else {
+                                chunk[y][x+i].setDangered(false);
+                                if(!chunk[y][x+i].getBlocked()) chunk[y][x+i].setImageView(null);
+                                if(chunk[y][x+i].getFiringBomb()) chunk[y][x+i].setImageView(new Image(getClass().getResource("/resources/Images/elephantBomb.gif").toExternalForm()));
+                                if(chunk[y][x+i].getCreatedItem()) {
+                                    chunk[y][x+i].setBlocked(false);
+                                    chunk[y][x+i].setCreatedItem(false);
+                                    chunk[y][x+i].createItem();
+                                }
+                            }
                         }
                     }
 
@@ -1272,7 +1299,8 @@ public class GameView {
     private void damage(int num) throws IOException {
 
         if(num == 1) {
-            if(chunk[player1.Y][player1.X].isDangered) {
+            if(chunk[player1.Y][player1.X].getDangered()) {
+                // player1 is damaged but not dead
                 if(player1.heart > 1) {
                     player1.heart--;
                     player1.isInvincible = true;
@@ -1291,6 +1319,7 @@ public class GameView {
                         }
                     }.start();
                 }
+                // player1 is dead
                 else {
                     if(isOnePlayer) {
                         if(playerAlive > 1) {
@@ -1302,7 +1331,7 @@ public class GameView {
                             gameOver1.setVisible(true);
                         }
                     }
-                    if(isTwoPlayer) {
+                    else {
                         if(playerAlive > 1) {
                             gameLoop.stop(); 
                             pane.getChildren().remove(gameOver2);
@@ -1316,9 +1345,11 @@ public class GameView {
             }
             else return; 
         }
-        if(num == 2) {
-            if(chunk[player2.Y][player2.X].isDangered) {
-                if(player2.heart-1 > 0) {
+        
+        else if(num == 2) {
+            if(chunk[player2.Y][player2.X].getDangered()) {
+                // player2 is damaged but not dead
+                if(player2.heart > 1) {
                     player2.heart--;
                     player2.isInvincible = true;
                     controller.heart2.setText(Integer.toString(player2.heart));
@@ -1335,34 +1366,24 @@ public class GameView {
                         }
                     }.start();
                 }
+                // player2 is dead
                 else {
-                    if(isOnePlayer) {
-                        if(playerAlive > 1) {
-                            gameLoop.stop(); 
-                            pane.getChildren().remove(gameOver1);
-                            pane.getChildren().add(gameOver1);
-                            controller.label.setText("You Lose !!!");
-                            controller.label.setTextFill(Color.RED);
-                            gameOver1.setVisible(true);
-                        }
-                    }
-                    if(isTwoPlayer) {
-                        if(playerAlive > 1) {
-                            gameLoop.stop(); 
-                            pane.getChildren().remove(gameOver2);
-                            pane.getChildren().add(gameOver2);
-                            controller.label.setText("Player2 Lose !!!");
-                            controller.label.setTextFill(Color.RED);
-                            gameOver2.setVisible(true);
-                        }
+                    if(playerAlive > 1) {
+                        gameLoop.stop(); 
+                        pane.getChildren().remove(gameOver2);
+                        pane.getChildren().add(gameOver2);
+                        controller.label.setText("Player2 Lose !!!");
+                        controller.label.setTextFill(Color.RED);
+                        gameOver2.setVisible(true);
                     }
                 }
             }
             else return; 
         }
     
-        if(num == 3) {
-            if(chunk[AI1.Y][AI1.X].isDangered) {
+        else if(num == 3) {
+            if(chunk[AI1.Y][AI1.X].getDangered()) {
+                // AI1 is damaged but not dead
                 if(AI1.heart > 1) {
                     AI1.heart--;
                     AI1.isInvincible = true;
@@ -1380,18 +1401,29 @@ public class GameView {
                         }
                     }.start();
                 }
+                // AI1 is dead 
                 else {
                     AI1.imageView.setVisible(false);
                     AI1.animation.stop();
+                    if(!AI1.isDead) playerAlive--;
                     AI1.isDead = true;
-                    playerAlive--;
+
+                    if(playerAlive == 1) {
+                        gameLoop.stop(); 
+                        pane.getChildren().remove(gameOver1);
+                        pane.getChildren().add(gameOver1);
+                        controller.label.setText("You Win !!!");
+                        controller.label.setTextFill(Color.YELLOW);
+                        gameOver1.setVisible(true);
+                    }
                 }
             }
             else return; 
         }
     
-        if(num == 4) {
-            if(chunk[AI2.Y][AI2.X].isDangered) {
+        else if(num == 4) {
+            if(chunk[AI2.Y][AI2.X].getDangered()) {
+                // AI2 is damaged but not dead
                 if(AI2.heart > 1) {
                     AI2.heart--;
                     AI2.isInvincible = true;
@@ -1409,18 +1441,29 @@ public class GameView {
                         }
                     }.start();
                 }
+                // AI2 is dead 
                 else {
                     AI2.imageView.setVisible(false);
                     AI2.animation.stop();
+                    if(!AI2.isDead) playerAlive--;
                     AI2.isDead = true;
-                    playerAlive--;
+
+                    if(playerAlive == 1) {
+                        gameLoop.stop(); 
+                        pane.getChildren().remove(gameOver1);
+                        pane.getChildren().add(gameOver1);
+                        controller.label.setText("You Win !!!");
+                        controller.label.setTextFill(Color.YELLOW);
+                        gameOver1.setVisible(true);
+                    }
                 }
             }
             else return; 
         }
     
-        if(num == 5) {
-            if(chunk[AI3.Y][AI3.X].isDangered) {
+        else if(num == 5) {
+            if(chunk[AI3.Y][AI3.X].getDangered()) {
+                // AI3 is damaged but not dead
                 if(AI3.heart > 1) {
                     AI3.heart--;
                     AI3.isInvincible = true;
@@ -1438,19 +1481,25 @@ public class GameView {
                         }
                     }.start();
                 }
+                // AI3 is dead
                 else {
                     AI3.imageView.setVisible(false);
                     AI3.animation.stop();
+                    if(!AI3.isDead) playerAlive--;
                     AI3.isDead = true;
-                    playerAlive--;
+
+                    if(playerAlive == 1) {
+                        gameLoop.stop(); 
+                        pane.getChildren().remove(gameOver1);
+                        pane.getChildren().add(gameOver1);
+                        controller.label.setText("You Win !!!");
+                        controller.label.setTextFill(Color.YELLOW);
+                        gameOver1.setVisible(true);
+                    }
                 }
             }
             else return; 
         }
-    
-    // if(isOnePlayer && playerAlive == 1) {
-
-    // }
     }
 
 }
