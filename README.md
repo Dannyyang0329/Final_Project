@@ -25,7 +25,7 @@ The game's name is **BombKing**. This is a interesting and exciting game. Hope y
 ## Link
 
 
-This is the link of the [**BombKing**](https://drive.google.com/file/d/1skY7E5xNNb8dkAclgH6mWEqyuS4XTzZm/view?usp=sharing).  (This is not available for MAC)
+This is the link of the [**BombKing**](https://drive.google.com/drive/folders/1nhONJBQBJjqixYpxif66n604vaH8txEa?usp=sharing).  (This is not available for MAC)
 
 <span style="color:black">PS. The password is PI.</span>
 
